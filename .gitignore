@@ -1,0 +1,5 @@
+data/*
+.env
+/src/.env
+/src/storage
+/src/vendor

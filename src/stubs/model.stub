@@ -1,0 +1,28 @@
+<?php
+
+namespace {{ namespace }};
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use DB;
+
+class {{ class }} extends Model
+{
+    use HasFactory;
+    
+    public $timestamps = true;
+
+    public $model_name = '';
+
+    public $table = '';
+
+    protected $primaryKey = '';     
+
+    protected $fillable = [
+
+    ];
+
+    protected $casts = [
+
+    ];
+}

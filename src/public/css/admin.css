@@ -1,0 +1,89 @@
+.wpl-header .logo{
+    width: 85px;
+    height: 85px;
+    border-radius: 50%;
+}
+.wrapper-login{
+    width: 400px;
+}
+.bdr-50{
+    border-radius: 50px;
+}
+
+table.dataTable>tbody>tr.child{
+    text-align: left;
+}
+
+.dataTables_paginate {
+    display: none !important;
+}
+
+.dataTables_info {
+    display: none !important; /* Ẩn cả thông tin "Showing 1 to 5 of X entries" */
+}
+
+/* Nút chung: áp dụng cho tất cả các nút */
+.relative.inline-flex {
+    padding: 8px 16px; /* Tăng padding cho nút rộng rãi hơn */
+    font-size: 14px; /* Kích thước chữ */
+    font-weight: 500; /* Độ đậm chữ */
+    text-decoration: none; /* Bỏ gạch chân */
+    border-radius: 6px; /* Bo góc nhẹ */
+    transition: all 0.2s ease-in-out; /* Hiệu ứng chuyển đổi mượt */
+}
+
+/* Nút Previous và Next trên màn hình nhỏ */
+.sm\:hidden .relative.inline-flex {
+    background-color: #f3f4f6; /* Màu nền xám nhạt */
+    color: #374151; /* Màu chữ xám đậm */
+    border: 1px solid #d1d5db; /* Viền xám */
+}
+
+.sm\:hidden .relative.inline-flex:hover {
+    background-color: #e5e7eb; /* Màu nền khi hover */
+    color: #1f2937; /* Màu chữ đậm hơn khi hover */
+}
+
+/* Nút Previous và Next trên màn hình lớn */
+.hidden.sm\:flex-1 .relative.inline-flex {
+    background-color: #ffffff; /* Màu nền trắng */
+    color: #6b7280; /* Màu chữ xám */
+    border: 1px solid #d1d5db; /* Viền xám */
+}
+
+.hidden.sm\:flex-1 .relative.inline-flex:hover {
+    background-color: #f9fafb; /* Màu nền sáng khi hover */
+    color: #374151; /* Màu chữ đậm hơn khi hover */
+}
+
+/* Nút số trang (1, 2) */
+.hidden.sm\:flex-1 .relative.inline-flex[aria-label^="Go to page"] {
+    background-color: #ffffff; /* Màu nền trắng */
+    color: #374151; /* Màu chữ xám đậm */
+}
+
+.hidden.sm\:flex-1 .relative.inline-flex[aria-label^="Go to page"]:hover {
+    background-color: #f3f4f6; /* Màu nền khi hover */
+    color: #1f2937; /* Màu chữ đậm hơn khi hover */
+}
+
+/* Nút đang active (ví dụ: trang 1) */
+.hidden.sm\:flex-1 .relative.inline-flex[aria-current="page"] {
+    background-color: #3b82f6; /* Màu nền xanh khi active */
+    color: #ffffff; /* Màu chữ trắng */
+    border-color: #3b82f6; /* Viền xanh */
+    cursor: default; /* Không cho click */
+}
+
+/* Nút bị vô hiệu hóa (disabled) */
+.hidden.sm\:flex-1 .relative.inline-flex[aria-disabled="true"] {
+    background-color: #e5e7eb; /* Màu nền xám nhạt */
+    color: #9ca3af; /* Màu chữ xám mờ */
+    cursor: not-allowed; /* Con trỏ không cho click */
+}
+
+/* Icon trong nút Previous và Next */
+.relative.inline-flex svg {
+    width: 18px; /* Kích thước icon */
+    height: 18px;
+}

@@ -1,0 +1,6 @@
+xây designpartten với repository 
+
+Tạo stub
+docker compose exec web php artisan stub:publish
+
+docker compose exec 

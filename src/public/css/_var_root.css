@@ -1,0 +1,20 @@
+:root {
+    --primary-color: #4336FB; /* Màu chủ đạo */
+    --primary-light: #7A6CFF; /* Màu sáng hơn của primary */
+    --primary-dark: #2C27B0; /* Màu tối hơn của primary */
+    --primary-accent: #36FBE5; /* Màu bổ trợ tương phản */
+
+    --background-color: #F5F5FF; /* Màu nền tổng thể */
+    --text-color: #1A1A2E; /* Màu chữ chính */
+    --text-light: #4E4E69; /* Màu chữ phụ */
+    --border-color: #D1D1E9; /* Màu viền */
+
+    --button-bg: var(--primary-color); /* Nền của button */
+    --button-hover: var(--primary-dark); /* Hover của button */
+    --button-text: #FFFFFF; /* Màu chữ trên button */
+
+    --link-color: var(--primary-accent); /* Màu liên kết */
+    --link-hover: var(--primary-light); /* Hover của liên kết */
+
+    --border-radius: 50px; /* Bordered radius */
+}
