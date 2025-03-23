@@ -12,11 +12,36 @@ footer{
 }
 
 .wapper-home{
-    background-image: url('/images/bg-client.png');
+    /* background-image: url('/images/bg_video.mp4');
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: center; */
     min-height: 100vh;
-    background-size: cover;
+    position: relative;
+    z-index: 1;
+    /* background-size: cover; */
+}
+
+/* CSS cho background video */
+.video-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1; /* Đẩy video ra sau nội dung */
+}
+
+/* Lớp phủ mờ để tạo hiệu ứng đẹp hơn */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    /* background: rgba(0, 0, 0, 0.5); Điều chỉnh độ mờ */
+    background: linear-gradient(#962a0e, #d462472e, #FFEB3B);
+    z-index: 0;
 }
 
 .wapper-home .text-header{

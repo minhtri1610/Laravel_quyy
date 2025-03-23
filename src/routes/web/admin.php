@@ -16,6 +16,9 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => ('App\Http\C
             Route::get('/', 'QuyYController@index')->name('index');
             Route::get('/danh-sach-cho-duyet', 'QuyYController@list')->name('list');
             Route::get('/them-phat-tu', 'QuyYController@create')->name('create');
+
+            Route::post('verify/{id?}', 'QuyYController@verify')->name('verify');
+            Route::post('delete/{id?}', 'QuyYController@destroy')->name('delete');
         });
     });
 });

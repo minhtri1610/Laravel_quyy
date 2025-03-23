@@ -32,21 +32,15 @@
             - Nguyện giúp mọi người tin hiểu Phật Pháp.
             - Nguyện kiên cường hộ đạo.
             </pre>
-            <p><b>Đệ tử: {{ session('temporary_user_full_name') }}</b></p>
+            <p><b>Phật tử: {{ session('temporary_user_full_name') }}</b></p>
             
             <div class="wp-step">
-                <b>Quy Trình Xác Nhận ĐK Quy Y:</b>
+                <p>Xác nhận đã gửi thông tin đăng ký Quy Y Tam Bảo tại Chùa Phước Lộc.</p>
+                <p>Hệ thống đã ghi nhận thông tin, Thầy Trụ trì sẽ xác thực thông tin và liên hệ để tiến hành lễ quy y tại Chùa.</p>
                 <p>
-                    Bước 1. Xác thực thông tin đăng ký.
-                </p>
-                <p>
-                    Bước 2. Tham dự lễ quy y tại <b>Chùa Phước Lộc</b>. Trong trường hợp ở xa sẽ được tiến hành khi Phật tử ghé viếng chùa.
+                    Pháp Danh và Phái Quy Y bản mềm sẽ được gửi qua đường dẫn này
+                    <a href="{{ route('client.quyy.search')}}">(đường dẫn xem phiếu quy y)</a>.
                     <br>
-                    Thầy Trụ Trì đặt pháp danh.
-                </p>
-                <p>
-                    Bước 3. Pháp Danh và Phái Quy Y bản mềm sẽ được gửi qua đường dẫn này
-                    xxxx
                     Vui lòng điền số điện thoại đã đăng ký vào biểu mẫu để nhận thông tin.
                 </p>
                 <p><i> Hỗ Trợ Kỹ Thuật: <b>036 324 7266</b> </i></p>

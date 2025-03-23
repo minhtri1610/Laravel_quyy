@@ -9,11 +9,28 @@ use DB;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
-use App\Models\Entities\UserService;
+use App\Models\Entities\User;
 use App\Models\Repositories\Contracts\UserServiceRepositoryInterface;
 use App\Models\Repositories\Eloquent\Repository;
 
 final class UserServiceRepository extends Repository implements UserServiceRepositoryInterface
 {
-    protected static $model = UserService::class;
+    protected static $model = User::class;
+
+    protected function buildWhereClauseByConditions(Builder &$queryBuilder, array $conditions = [])
+    {
+        parent::buildWhereClauseByConditions($queryBuilder, $conditions);
+
+        $table = $queryBuilder->getModel()->getTable();
+
+        if (array_key_exists('nick_name', $conditions)) {
+            $nick_name = null === $conditions['nick_name'] || '' === $conditions['nick_name'] ? null : $conditions['nick_name'];
+            if (null !== $nick_name) {
+                $queryBuilder->where("{$table}.nickname",'=',$nick_name);
+            }
+        }
+    }
+    public function getLatest(){
+        return (static::$model)::orderBy('created_at', 'desc')->first();
+    }
 }

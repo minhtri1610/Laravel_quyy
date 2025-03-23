@@ -8,6 +8,8 @@ Route::group(['as' => 'client.', 'namespace' => ('\App\Http\Controllers\Client')
     Route::get('quyy/dang-ky', 'TemporaryController@create')->name('quyy.create');
     Route::post('quyy/dang-ky', 'TemporaryController@store')->name('quyy.store');
     Route::get('quyy/dang-ky-thanh-cong', 'TemporaryController@success')->name('quyy.success');
+    
+    Route::get('quyy/tim-kiem', 'QuyYController@search')->name('quyy.search');
 
     Route::get('/dang-nhap', 'AuthController@login')->name('login');
     Route::post('/dang-nhap', 'AuthController@postLogin')->name('login.post');

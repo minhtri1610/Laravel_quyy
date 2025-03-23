@@ -85,4 +85,6 @@ interface RepositoryInterface
      * @return LengthAwarePaginator
      */
     public function paginate(array $conditions = [], int $perPage): LengthAwarePaginator;
+
+    public function updateOrCreate(array $attributes, array $values);
 }

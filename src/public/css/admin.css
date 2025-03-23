@@ -24,7 +24,6 @@ table.dataTable>tbody>tr.child{
 
 /* Nút chung: áp dụng cho tất cả các nút */
 .relative.inline-flex {
-    padding: 8px 16px; /* Tăng padding cho nút rộng rãi hơn */
     font-size: 14px; /* Kích thước chữ */
     font-weight: 500; /* Độ đậm chữ */
     text-decoration: none; /* Bỏ gạch chân */
@@ -86,4 +85,8 @@ table.dataTable>tbody>tr.child{
 .relative.inline-flex svg {
     width: 18px; /* Kích thước icon */
     height: 18px;
+}
+
+.logo img{
+    width: 45px;
 }

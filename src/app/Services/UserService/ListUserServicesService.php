@@ -48,5 +48,10 @@ class ListUserServicesService
 
         return $this->repository->paginate($conditions, $perPage);
     }
+
+    public function getLastest(): ?Entity
+    {
+        return $this->repository->getLatest();
+    }
 }
 

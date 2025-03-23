@@ -7,17 +7,17 @@ use Exception;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use DB;
-use App\Models\Entities\UserService;
+use App\Models\Entities\User;
 use App\Models\Repositories\Contracts\UserServiceRepositoryInterface;
 use App\Http\Requests\UserService\SaveUserServiceRequestFilter;
 use App\Http\Requests\UserService\SaveUserServiceRequest;
 use App\Services\Traits\Filterable;
 use App\Services\Traits\Validatable;
+use Illuminate\Support\Facades\Hash;
 
 class CreateUserServiceService
 {
-    use Filterable,
-        Validatable;
+    use Validatable;
 
     private $repository;
     private $request;
@@ -27,27 +27,21 @@ class CreateUserServiceService
         $this->repository = $repository;
         $this->request    = $request;
 
-        $this->setRequestFilter(new SaveUserServiceRequestFilter());
         $this->setFormRequest(new SaveUserServiceRequest());
         $this->init();
     }
 
     public function init()
     {
-        if (! $this->request->isMethod('GET')) {
-            $this->filterInputs();
-            return;
-        }
-
         $this->request->flush();
     }
 
-    public function create($inputs = null): UserService
+    public function create($data_temp, $inputs = null): User
     {
         if (is_null($inputs)) {
             $inputs = $this->request->except('action');
         }
-        $inputs = convertSnakeCase($inputs);
+        $inputs = $this->sanitizeData($data_temp, $inputs);
         try {
             return DB::transaction(function () use ($inputs) {
                 $user_service = $this->repository->new($inputs);
@@ -58,4 +52,42 @@ class CreateUserServiceService
             throw $exception;
         }
     }
+
+    public function updateOrCreate($user_service, $inputs = null)
+    {
+        if (is_null($inputs)) {
+            $inputs = $this->request->except('action');
+        }
+        $inputs = $this->sanitizeData($user_service, $inputs);
+        try {
+            $conditions = [
+                'uid_code' => $inputs['uid_code']
+            ];
+            $item = $this->repository->updateOrCreate($conditions, $inputs);
+            return $item;
+        } catch (Throwable $exception) {
+            throw $exception;
+        }
+    }
+
+    private function sanitizeData($data_temp, $inputs): array
+    {
+        return [
+            'name'            => trim($data_temp->full_name ?? 'No Name'),
+            'gender'          => $data_temp->gender ?? 'male',
+            'address'         => trim($data_temp->address ?? ''),
+            'country'         => trim($data_temp->province ?? ''),
+            'city'            => trim($data_temp->district ?? ''),
+            'state'           => trim($data_temp->ward ?? ''),
+            'email'           => strtolower(trim($data_temp->email ?? '')),
+            'password'        => $data_temp->password ?? Hash::make(Carbon::parse($data_temp->birth_date)->format('Y-m-d')),
+            'phone'           => preg_replace('/[^0-9]/', '', $data_temp->phone_number ?? ''),
+            'birth_date'      => $data_temp->birth_date ?? null,
+            'nickname'        => trim($inputs['nick_name'] ?? ''),
+            'uid_code'        => $inputs['uid'],
+            'is_active'       => config('conts.is_active'),
+            'date_registered' => Carbon::parse($data_temp->created_at)->format('Y-m-d')
+        ];
+    }
+
 }

@@ -19,22 +19,14 @@ class TemporaryController extends Controller
         return view('client.temporary-users.create');
     }
 
-    public function store(CreateTemporaryUserServiceService $createTeamporary, Request $request)
+    public function store(Request $request, CreateTemporaryUserServiceService $service)
     {
         try {
-            if ($createTeamporary !== null && $request !== null) {
-                if ($createTeamporary->passesValidation()) {
-                    $createTeamporary->create();
-                    session()->flash('temporary_user_full_name', $request->input('full_name'));
-                    return redirect()->route('client.quyy.success');
-                } else {
-                    return redirect()->back()->withErrors(['validation' => 'Dữ liệu không hợp lệ!']);
-                }
-            } else {
-                return redirect()->back()->withErrors(['validation' => 'Dữ liệu không hợp lệ!']);
-            }
+            $service->create($request->all());
+            session()->flash('temporary_user_full_name', $request->input('full_name'));
+            return redirect()->route('client.quyy.success');
         } catch (Throwable $th) {
-            return response($th->getMessage(), 500);
+            return redirect()->back()->withErrors(['validation' => 'Dữ liệu không hợp lệ!']);
         }
     }
 

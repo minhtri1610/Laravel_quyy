@@ -42,4 +42,19 @@ if (!function_exists('load_php_files')) {
             return is_string($string) && is_array(json_decode($string, true)) && (json_last_error() == JSON_ERROR_NONE) ? true : false;
         }
     }
+
+    if (!function_exists('create_uid')) {
+        function create_uid($id)
+        {
+            $uid = format_uid($id+1);
+            return config('conts.uid_str').$uid;
+        }
+    }
+
+    if (!function_exists('format_uid')) {
+        function format_uid($number, $length = 5)
+        {
+            return str_pad($number, $length, '0', STR_PAD_LEFT);
+        }
+    }
 }

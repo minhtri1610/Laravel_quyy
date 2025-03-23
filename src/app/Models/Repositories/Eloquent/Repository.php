@@ -515,4 +515,8 @@ abstract class Repository implements RepositoryInterface
             return $entity;
         });
     }
+
+    public function updateOrCreate(array $attributes, array $values){
+        return static::$model::updateOrCreate($attributes, $values);
+    }
 }

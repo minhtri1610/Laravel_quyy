@@ -17,12 +17,25 @@ class User extends Authenticatable
 
     public $model_name = '';
 
-    public $table = '';
+    public $table = 'users';
 
-    protected $primaryKey = '';     
+    protected $primaryKey = 'id';
 
     protected $fillable = [
-
+        'name',
+        'gender',
+        'address',
+        'country',
+        'city',
+        'state',
+        'email',
+        'password',
+        'phone',
+        'birth_date',
+        'nickname',
+        'uid_code',
+        'is_active',
+        'date_registered',
     ];
 
     protected $casts = [

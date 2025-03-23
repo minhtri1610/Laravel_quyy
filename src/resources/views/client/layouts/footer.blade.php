@@ -1,5 +1,5 @@
 <footer class="footer text-center">
-    <p>&copy; 2025 Intel1610. All rights reserved.</p>
+    <p>&copy; 2025 Hệ thống quản lý chùa Phước Lộc.</p>
 </footer>
 
 <script src="{{asset('assets/js/vendor/jquery-2.2.4.min.js')}}"></script>

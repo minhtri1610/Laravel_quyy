@@ -7,5 +7,8 @@ return [
     ],
     'infos' => [
         'phone_support' => '036 324 7266',
-        ]
+    ],
+    'uid_str' => 'CPL_',
+    'is_active' => '1',
+    
 ];

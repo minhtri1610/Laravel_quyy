@@ -29,6 +29,8 @@ class TemporaryUser extends Model
         'ward',
         'address',
         'note',
+        'temporary_user_id',
+        'approved',
     ];
 
     protected $casts = [
