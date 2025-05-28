@@ -36,9 +36,9 @@
             
             <div class="wp-step">
                 <p>Xác nhận đã gửi thông tin đăng ký Quy Y Tam Bảo tại Chùa Phước Lộc.</p>
-                <p>Hệ thống đã ghi nhận thông tin, Thầy Trụ trì sẽ xác thực thông tin và liên hệ để tiến hành lễ quy y tại Chùa.</p>
+                <p>Hệ thống đã ghi nhận thông tin, Thầy Trụ trì sẽ xác thực thông tin và liên hệ để tiến hành lễ Quy Y tại Chùa.</p>
                 <p>
-                    Pháp Danh và Phái Quy Y bản mềm sẽ được gửi qua đường dẫn này
+                    Pháp Danh và Thẻ Quy Y bản mềm sẽ được gửi qua đường dẫn này
                     <a href="{{ route('client.quyy.search')}}">(đường dẫn xem phiếu quy y)</a>.
                     <br>
                     Vui lòng điền số điện thoại đã đăng ký vào biểu mẫu để nhận thông tin.
@@ -49,6 +49,8 @@
         
     </div>
 </div>
+
+@include('client.layouts.menu-bar')
 
 @push('css')
     <link rel="stylesheet" href="{{ asset('css/register-quyy.css') }}">

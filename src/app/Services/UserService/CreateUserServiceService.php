@@ -1,5 +1,7 @@
 <?php
+
 declare(strict_types=1);
+
 namespace App\Services\UserService;
 
 use Throwable;
@@ -14,6 +16,7 @@ use App\Http\Requests\UserService\SaveUserServiceRequest;
 use App\Services\Traits\Filterable;
 use App\Services\Traits\Validatable;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 
 class CreateUserServiceService
 {
@@ -86,8 +89,8 @@ class CreateUserServiceService
             'nickname'        => trim($inputs['nick_name'] ?? ''),
             'uid_code'        => $inputs['uid'],
             'is_active'       => config('conts.is_active'),
-            'date_registered' => Carbon::parse($data_temp->created_at)->format('Y-m-d')
+            'date_registered' => Carbon::parse($data_temp->created_at)->format('Y-m-d'),
+            'uid'             => Str::uuid()->toString(),
         ];
     }
-
 }

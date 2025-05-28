@@ -14,6 +14,9 @@
                         <label for="name">Đặt Pháp Danh:</label>
                         <input type="hidden" name="id" id="m_id">
                         <input type="text" class="form-control" id="m_nick_name" placeholder="Nhập Pháp Danh..." required>
+                        <button type="button" class="mt-2 btn-suguest-nickname btn btn-warning" data-route-suggest="{{ route('admin.quyy.gererate') }}"><i class="bi bi-robot"></i> AI Gợi ý</button>
+                        <div id="loader" class="loader"></div>
+                        <div class="m-list-nickname"></div>
                     </div>
                     <div class="form-group">
                         <label for="name">Họ và Tên:</label>

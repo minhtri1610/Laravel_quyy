@@ -34,8 +34,10 @@ class User extends Authenticatable
         'birth_date',
         'nickname',
         'uid_code',
+        'uid',
         'is_active',
         'date_registered',
+        'qr_code',
     ];
 
     protected $casts = [

@@ -9,8 +9,8 @@
                     <!-- <h4 class="header-title">Data Table Dark</h4> -->
                     <div class="row">
                         <div class="col-6">
-                            <form class="d-flex" role="search">
-                                <input class="form-control me-2" type="search" placeholder="Tìm tên, pháp danh, sdt..." aria-label="Search">
+                            <form class="d-flex" role="search" method="GET" action="{{route('admin.quyy.index')}}">
+                                <input class="form-control me-2" value="{{ $search }}" name="search" type="search" placeholder="Tìm tên, pháp danh, sdt..." aria-label="Search">
                                 <button class="btn btn-primary" type="submit">Tìm kiếm</button>
                             </form>
                         </div>

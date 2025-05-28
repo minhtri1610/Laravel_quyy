@@ -10,4 +10,6 @@ use App\Models\Entities\UserService;
 interface UserServiceRepositoryInterface extends RepositoryInterface
 {
     public function getLatest();
+
+    public function findByUid($uid);
 }

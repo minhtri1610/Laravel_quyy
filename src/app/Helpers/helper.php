@@ -1,6 +1,7 @@
 <?php
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 
 if (!function_exists('load_php_files')) {
     /**
@@ -55,6 +56,58 @@ if (!function_exists('load_php_files')) {
         function format_uid($number, $length = 5)
         {
             return str_pad($number, $length, '0', STR_PAD_LEFT);
+        }
+    }
+
+    if (!function_exists('format_phone')) {
+        function format_phone($phone)
+        {
+             // Xóa tất cả ký tự không phải số
+            $phone = preg_replace('/\D/', '', $phone);
+
+            // Lấy các phần cần hiển thị
+            $part1 = substr($phone, 0, 3);  // 3 số đầu
+            $part3 = substr($phone, 7);     // 3 số cuối
+
+            return "{$part1} xxxx {$part3}";
+        }
+    }
+
+
+    if (!function_exists('formatHiddenEmail')) {
+        function formatHiddenEmail($email)
+        {
+            // Kiểm tra xem có phải email hợp lệ không
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                return $email;
+            }
+
+            // Tách phần username và domain
+            list($username, $domain) = explode('@', $email);
+
+            // Xử lý phần username
+            $length = strlen($username);
+            if ($length <= 2) {
+                $hidden = str_repeat('*', $length); // ẩn toàn bộ nếu quá ngắn
+            } else {
+                $visible = substr($username, 0, 2); // giữ lại 2 ký tự đầu
+                $last = substr($username, $length - 1); // giữ lại 2 ký tự cuối
+                $hidden = $visible . str_repeat('*', $length - 3) . $last;
+            }
+
+            return $hidden . '@' . $domain;
+        }
+    }
+
+    if (!function_exists('check_is_admin')) {
+        function check_is_admin(){
+            $auth = Auth::guard('admin');
+            $role = $auth->user()->roles[0];
+            $roleConfig = config('conts.roles');
+            if(!in_array($role, array_values($roleConfig))){
+                return false;
+            }
+            return true;
         }
     }
 }

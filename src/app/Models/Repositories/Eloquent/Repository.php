@@ -519,4 +519,18 @@ abstract class Repository implements RepositoryInterface
     public function updateOrCreate(array $attributes, array $values){
         return static::$model::updateOrCreate($attributes, $values);
     }
+
+    public function paginateWhereOr(array $conditions, int $perPage = 15, array $relations = [])
+    {
+        return $this->model->with($relations)->where(function ($query) use ($conditions) {
+            foreach ($conditions as $condition) {
+                $query->orWhere($condition[0], $condition[1], $condition[2]);
+            }
+        })->paginate($perPage);
+    }
+
+    public function insert(array $data)
+    {
+        return static::$model::insert($data);
+    }
 }

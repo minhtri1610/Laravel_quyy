@@ -28,6 +28,11 @@ class ListUserServicesService
         return $this->repository->find($id);
     }
 
+    public function findByUid($uid): ?Entity
+    {
+        return $this->repository->findByUid($uid);
+    }
+
     public function list($conditions = null, $limit = null, $offset = null): Collection
     {
         if (! is_array($conditions)) {
@@ -47,6 +52,15 @@ class ListUserServicesService
         }        
 
         return $this->repository->paginate($conditions, $perPage);
+    }
+
+    public function paginateWhereOr($conditions = null, int $perPage = 10): LengthAwarePaginator
+    {
+        if (! is_array($conditions)) {
+            $conditions = $this->conditionQueryToArray($conditions);
+        }        
+
+        return $this->repository->paginateWhereOr($conditions, $perPage);
     }
 
     public function getLastest(): ?Entity

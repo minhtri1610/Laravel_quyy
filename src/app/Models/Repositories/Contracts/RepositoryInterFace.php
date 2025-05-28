@@ -87,4 +87,8 @@ interface RepositoryInterface
     public function paginate(array $conditions = [], int $perPage): LengthAwarePaginator;
 
     public function updateOrCreate(array $attributes, array $values);
+
+    public function paginateWhereOr(array $conditions, int $perPage = 15, array $relations = []);
+
+    public function insert(array $data);
 }

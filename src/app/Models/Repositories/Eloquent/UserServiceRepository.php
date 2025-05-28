@@ -29,8 +29,27 @@ final class UserServiceRepository extends Repository implements UserServiceRepos
                 $queryBuilder->where("{$table}.nickname",'=',$nick_name);
             }
         }
+
+        if (isset($conditions['search']) && $conditions['search'] !== '') {
+            $searchTerm = $conditions['search'];
+            $queryBuilder->orWhere("{$table}.name", 'like', "%{$searchTerm}%")
+                         ->orWhere("{$table}.nickname", 'like', "%{$searchTerm}%")
+                         ->orWhere("{$table}.phone", 'like', "%{$searchTerm}%");
+        }
+
+        if (isset($conditions['keys']) && $conditions['keys'] !== '') {
+            $searchTerm = $conditions['keys'];
+            $queryBuilder->orWhere("{$table}.name", 'like', "%{$searchTerm}%")
+                         ->orWhere("{$table}.uid_code", 'like', "%{$searchTerm}%")
+                         ->orWhere("{$table}.nickname", 'like', "%{$searchTerm}%")
+                         ->orWhere("{$table}.phone", 'like', "%{$searchTerm}%");
+        }
     }
     public function getLatest(){
         return (static::$model)::orderBy('created_at', 'desc')->first();
+    }
+
+    public function findByUid($uid){
+        return (static::$model)::where('uid', $uid)->first();
     }
 }

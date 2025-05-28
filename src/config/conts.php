@@ -10,5 +10,5 @@ return [
     ],
     'uid_str' => 'CPL_',
     'is_active' => '1',
-    
+    'GEMINI_API_KEY' => env('GEMINI_API_KEY'),
 ];

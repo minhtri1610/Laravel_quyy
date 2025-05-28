@@ -133,7 +133,7 @@
                 </div>
 
                 <div class="mb-3">
-                    <p><i>Kiểm tra thông tin đã nhập và chọn nút [Đăng Ký] để gửi thông tin đăng ký quy y tam bảo
+                    <p><i>Kiểm tra thông tin đã nhập và nhấn nút [Đăng Ký] để gửi thông tin đăng ký Quy Y Tam Bảo
 </i></p>
                     <p><b>Hỗ trợ kỹ thuật: {{config('conts.infos.phone_support')}}</b></p>
                 </div>
@@ -147,6 +147,8 @@
         </div>
     </div>
 </div>
+
+@include('client.layouts.menu-bar')
 
 @push('css')
     <link rel="stylesheet" href="{{ asset('css/register-quyy.css') }}">

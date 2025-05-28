@@ -1,16 +1,16 @@
-.wpl-header .logo{
+.wpl-header .logo {
     width: 85px;
     height: 85px;
     border-radius: 50%;
 }
-.wrapper-login{
+.wrapper-login {
     width: 400px;
 }
-.bdr-50{
+.bdr-50 {
     border-radius: 50px;
 }
 
-table.dataTable>tbody>tr.child{
+table.dataTable > tbody > tr.child {
     text-align: left;
 }
 
@@ -87,6 +87,26 @@ table.dataTable>tbody>tr.child{
     height: 18px;
 }
 
-.logo img{
+.logo img {
     width: 45px;
+}
+
+.loader {
+    display: none;
+    border: 8px solid #f3f3f3;
+    border-top: 8px solid #3498db;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin: 100px auto;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
