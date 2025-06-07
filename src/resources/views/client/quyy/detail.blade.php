@@ -127,9 +127,19 @@
             <p><span class="label">Pháp danh:</span> <span class="label d-name"> {{$user->nickname ?? '...'}}</span></p>
             <p><span class="label">Giới tính:</span> {{$user->gender == 'male' ? 'Nam' : 'Nữ'}} | <span class="label">Ngày sinh:</span> {{$user->birth_date}}</p>
             @if(empty($user->country))
-            <p><span class="label">Địa chỉ:</span> ... </p>
+                <p><span class="label">Địa chỉ:</span> ... </p>
             @else
-            <p><span class="label">Địa chỉ:</span> {{$user->country}} - {{$user->city}} -  {{$user->state}} -  {{$user->address}}</p>
+                @php
+                    $addressParts = array_filter([
+                        $user->country,
+                        $user->city,
+                        $user->state,
+                        $user->address
+                    ]);
+
+                    $full_address = implode(' - ', $addressParts);
+                @endphp
+                <p><span class="label">Địa chỉ:</span> {{$full_address}}</p>
             @endif
         </div>
 

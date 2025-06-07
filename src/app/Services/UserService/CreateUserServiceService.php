@@ -45,6 +45,7 @@ class CreateUserServiceService
             $inputs = $this->request->except('action');
         }
         $inputs = $this->sanitizeData($data_temp, $inputs);
+
         try {
             return DB::transaction(function () use ($inputs) {
                 $user_service = $this->repository->new($inputs);
@@ -75,6 +76,9 @@ class CreateUserServiceService
 
     private function sanitizeData($data_temp, $inputs): array
     {
+        if (is_array($data_temp)) {
+            $data_temp = (object) $data_temp;
+        }
         return [
             'name'            => trim($data_temp->full_name ?? 'No Name'),
             'gender'          => $data_temp->gender ?? 'male',
@@ -87,9 +91,9 @@ class CreateUserServiceService
             'phone'           => preg_replace('/[^0-9]/', '', $data_temp->phone_number ?? ''),
             'birth_date'      => $data_temp->birth_date ?? null,
             'nickname'        => trim($inputs['nick_name'] ?? ''),
-            'uid_code'        => $inputs['uid'],
+            'uid_code'        => $inputs['uid'] ?? $data_temp->uid_code,
             'is_active'       => config('conts.is_active'),
-            'date_registered' => Carbon::parse($data_temp->created_at)->format('Y-m-d'),
+            'date_registered' => isset($data_temp->created_at) ? Carbon::parse($data_temp->created_at)->format('Y-m-d') : Carbon::now()->format('Y-m-d'),
             'uid'             => Str::uuid()->toString(),
         ];
     }

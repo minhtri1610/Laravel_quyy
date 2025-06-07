@@ -2,6 +2,7 @@
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 if (!function_exists('load_php_files')) {
     /**
@@ -47,6 +48,9 @@ if (!function_exists('load_php_files')) {
     if (!function_exists('create_uid')) {
         function create_uid($id)
         {
+            if (preg_match('/\d+$/', $id, $matches)) {
+                $id = (int) $matches[0];
+            }
             $uid = format_uid($id+1);
             return config('conts.uid_str').$uid;
         }
@@ -110,4 +114,53 @@ if (!function_exists('load_php_files')) {
             return true;
         }
     }
+
+    if (!function_exists('convert_address')) {
+        function convert_address($item){
+            $addressParts = array_filter([
+                $item->address,
+                $item->state,
+                $item->city,
+                $item->country,
+            ]);
+
+            return implode(' - ', $addressParts);
+        }
+    }
+
+    if (!function_exists('handle_ID')) {
+        function handle_ID($id){
+            return str_replace('CPL_00', '', $id);
+        }
+    }
+
+    function formatBirthDate($input) {
+        // Nếu chỉ có 4 chữ số, giả định là năm
+        if (preg_match('/^\d{4}$/', $input)) {
+            return $input . '-01-01';
+        }
+    
+        // Nếu là định dạng ngày tháng năm khác, cố gắng parse
+        $timestamp = strtotime($input);
+        if ($timestamp !== false) {
+            return date('Y-m-d', $timestamp);
+        }
+    
+        return null; // Trường hợp không hợp lệ
+    }
+
+    if (!function_exists('calculate_age')) {
+        function calculate_age($birthDate)
+        {
+            if (!$birthDate) return null;
+    
+            try {
+                return Carbon::parse($birthDate)->age;
+            } catch (\Exception $e) {
+                return null;
+            }
+        }
+    }
+    
+
 }

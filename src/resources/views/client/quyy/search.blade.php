@@ -33,6 +33,9 @@
                             </div>
                         </div>
                     @endforeach
+                    <div class="mt-4">
+                        {{ $users->links('admin.layouts.pagination') }}
+                    </div>
                 @else
                     <div class="col-md-12">
                         <div class="card">
@@ -73,10 +76,10 @@
         }
 
         function verifyPhone() {
-            if($('#m_phone').val() == '') {
-                toastr.error("Vui lòng nhập số điện thoại!", "Thông báo");
-                return false;
-            }
+            // if($('#m_phone').val() == '') {
+            //     toastr.error("Vui lòng nhập số điện thoại!", "Thông báo");
+            //     return false;
+            // }
             let data = getInfo();
             let url = $('#form-verify').attr('action');
             $.ajax({

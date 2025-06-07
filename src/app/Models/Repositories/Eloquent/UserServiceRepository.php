@@ -30,23 +30,39 @@ final class UserServiceRepository extends Repository implements UserServiceRepos
             }
         }
 
+        if (array_key_exists('uid', $conditions)) {
+            $uid = null === $conditions['uid'] || '' === $conditions['uid'] ? null : $conditions['uid'];
+            if (null !== $uid) {
+                $queryBuilder->where("{$table}.uid",'=',$uid);
+            }
+        }
+
         if (isset($conditions['search']) && $conditions['search'] !== '') {
             $searchTerm = $conditions['search'];
-            $queryBuilder->orWhere("{$table}.name", 'like', "%{$searchTerm}%")
-                         ->orWhere("{$table}.nickname", 'like', "%{$searchTerm}%")
-                         ->orWhere("{$table}.phone", 'like', "%{$searchTerm}%");
+            $queryBuilder->where(function ($query) use ($table, $searchTerm) {
+                $query->orWhere("{$table}.name", 'like', "%{$searchTerm}%")
+                      ->orWhere("{$table}.nickname", 'like', "%{$searchTerm}%")
+                      ->orWhere("{$table}.phone", 'like', "%{$searchTerm}%");
+            });
         }
 
         if (isset($conditions['keys']) && $conditions['keys'] !== '') {
             $searchTerm = $conditions['keys'];
-            $queryBuilder->orWhere("{$table}.name", 'like', "%{$searchTerm}%")
-                         ->orWhere("{$table}.uid_code", 'like', "%{$searchTerm}%")
-                         ->orWhere("{$table}.nickname", 'like', "%{$searchTerm}%")
-                         ->orWhere("{$table}.phone", 'like', "%{$searchTerm}%");
+            $queryBuilder->where(function ($query) use ($table, $searchTerm) {
+                $query->orWhere("{$table}.name", 'like', "%{$searchTerm}%")
+                        ->orWhere("{$table}.uid_code", 'like', "%{$searchTerm}%")
+                        ->orWhere("{$table}.nickname", 'like', "%{$searchTerm}%")
+                        ->orWhere("{$table}.phone", 'like', "%{$searchTerm}%");
+            });
+        }
+
+        if(isset($conditions['year']) && $conditions['year'] !== null){
+            $year = $conditions['year'];
+            $queryBuilder->whereYear("{$table}.date_registered", $year);
         }
     }
     public function getLatest(){
-        return (static::$model)::orderBy('created_at', 'desc')->first();
+        return (static::$model)::orderBy('id', 'desc')->first();
     }
 
     public function findByUid($uid){

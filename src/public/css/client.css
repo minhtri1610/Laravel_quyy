@@ -278,4 +278,7 @@ footer{
     .c-action a{
         margin-top: 15px;
     }
+    .wapper-register .reg-content{
+        max-width: 100%;
+    }
 }

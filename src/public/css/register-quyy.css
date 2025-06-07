@@ -37,3 +37,24 @@
     min-height: 100vh;
     background-size: cover;
 }
+
+@media screen and (max-width: 768px) {
+    .wapper-register .reg-content{
+        max-width: unset;
+    }
+}
+
+@media screen and (max-width: 414px) {
+    .wapper-register .create-title{
+        margin-bottom: 1rem!important;
+        font-size: 1.1rem;
+    }
+    .wapper-register .create-brand{
+        font-size: 1.3rem;
+        margin-bottom: 1.4rem;
+    }
+
+    .wapper-register .create-address{
+        display: none;
+    }
+}

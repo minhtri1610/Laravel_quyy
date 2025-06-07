@@ -10,6 +10,7 @@ use App\Services\UserService\CreateUserServiceService;
 use App\Services\UserService\ListUserServicesService;
 use App\Services\UserService\ImportUserServiceService;
 use App\Services\Import\ImportUserService;
+use App\Services\UserService\UpdateUserServiceService;
 use Illuminate\Support\Facades\Hash;
 use Exception;
 use DB;
@@ -19,6 +20,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use App\Traits\ConvertHeaderTrait;
 use App\Traits\QRcodeGenerateTrait;
+use App\Http\Requests\CreateUserFromAdminRequest;
 use Carbon\Carbon;
 
 class QuyYController extends Controller
@@ -33,13 +35,20 @@ class QuyYController extends Controller
             ['title' => 'QL Quy Y', 'url' => route('admin.quyy.index')],
             ['title' => 'Danh Sách Quy Y', 'url' => null]
         ];
-        $search = $request->get('search');
-        $conditions = [
-            'approved' => 1,
-            'search' => $search,
+        $search      = $request->get('search');
+        $search_year = $request->get('year');
+        $conditions  = [
+            // 'active' => 1,
+            'search'   => $search,
+            'year'     => $search_year,
+            'orders'   => [
+                'id' => 'desc',
+            ],
         ];
-        $lists = $listUserServicesService->paginate($conditions);
-        return view('admin.quyy.index', compact('breadcrumbs', 'lists', 'search'));
+        $lists = $listUserServicesService->paginate($conditions)->appends(['search' => $search, 'year' => $search_year]);
+        $years = DB::table('users')->select(DB::raw('YEAR(date_registered) as year'))->groupBy('year')->get();
+
+        return view('admin.quyy.index', compact('breadcrumbs', 'lists', 'search', 'search_year', 'years'));
     }
 
     public function list(
@@ -145,10 +154,10 @@ class QuyYController extends Controller
                 if ($data && !empty($data['ten'])) {
                     
                     $arr_address = $data['dia_chi'] ? explode(',', $data['dia_chi']) : [];
-                    $data['country']   = $arr_address[0] ?? null;
-                    $data['city']      = $arr_address[1] ?? null;
-                    $data['state']     = $arr_address[2] ?? null;
-                    $data['address']   = $arr_address[3] ?? null;
+                    $data['country']   = $arr_address[3] ?? null;
+                    $data['city']      = $arr_address[2] ?? null;
+                    $data['state']     = $arr_address[1] ?? null;
+                    $data['address']   = $arr_address[0] ?? null;
                     $uid = Str::uuid()->toString();
                     $phone = $data['sdt'] ? preg_replace('/[^0-9]/', '', $data['sdt']) : null;
                     $hash = md5($uid.$phone)."_".$uid;
@@ -167,7 +176,7 @@ class QuyYController extends Controller
                         'address'         => $data['address'] ?? null,
                         'gender'          => $data['gioi_tinh'] ? : null,
                         'phone'           => $phone,
-                        'birth_date'      => $data['nam_sinh'] ? date('Y-m-d', strtotime($data['nam_sinh'])) : null,
+                        'birth_date' => !empty($data['nam_sinh']) ? formatBirthDate($data['nam_sinh']) : null,
                         'date_registered' => Carbon::createFromFormat('d/m/Y', $data['ngay_quy_y'])->format('Y-m-d'),
                         'is_active'       => 1,
                         'gender'          => $data['gioi_tinh'] == 'Nam' ? 'male' : 'female' ?? null,
@@ -352,6 +361,104 @@ class QuyYController extends Controller
                 'success' => false,
                 'message' => $e->getMessage()
             ], 500);
+        }
+    }
+
+    public function detail(
+        Request $request,
+        ListUserServicesService $listUserServicesService,
+        $uid
+    ) {
+        $breadcrumbs = [
+            ['title' => 'Danh Sách Phật tử', 'url' => route('admin.quyy.index')],
+            ['title' => $uid, 'url' => null]
+        ];
+
+        $conditions = [
+            'uid' => $uid,
+        ];
+        $data = $listUserServicesService->list($conditions)->first();
+        return view('admin.quyy.detail', ['data' => $data, 'breadcrumbs' => $breadcrumbs]);
+    }
+
+    public function update(
+        Request $request,
+        ListUserServicesService $listUserServicesService,
+        UpdateUserServiceService $updateUserServiceService,
+        $uid
+    ){
+        try {
+            $conditions = [
+                'uid' => $uid,
+            ];
+
+            $data = $listUserServicesService->list($conditions)->first();
+            if(empty($data)){
+                return abort(404);
+            }
+
+            $request->merge([
+                'uid' => $uid,
+                'country' => $request->province,
+                'city' => $request->district,
+                'state' => $request->ward,
+            ]);
+
+            $updateUserServiceService->updateByUid($request->all());
+            return redirect()->route('admin.quyy.index');
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function store(
+        CreateUserFromAdminRequest $request, 
+        CreateUserServiceService $createUserServiceService,
+        ListUserServicesService $listUserServicesService
+    ){
+        try {
+            $data = $request->all();
+
+            $conditions_check = [
+                'nick_name' => $data['nickname']
+            ];
+            $check_nick_name = $listUserServicesService->list($conditions_check);
+
+            if (!$check_nick_name->isEmpty()) {
+                return redirect()->back()
+                ->withErrors(['nickname' => 'Pháp Danh đã tồn tại, vui lòng đặt tên khác!'])
+                ->withInput();
+            }
+
+            $last_user = $listUserServicesService->getLastest();
+            $uid_code = 'CPL_00001';
+            if (!is_null($last_user)) {
+                $uid_code = create_uid($last_user->uid_code);
+            }
+
+            $uid = Str::uuid()->toString();
+            $phone = '';
+            if(isset($request->phone_number)){
+                $phone = $request->phone_number ? preg_replace('/[^0-9]/', '', $request->phone_number) : null;
+            }
+            $hash = md5($uid.$phone)."_".$uid;
+            $url = route('client.quyy.detail', ['uid' => $hash]);
+            $qr_code = $this->createQR($url);
+
+            $request->merge([
+                'nick_name' => $data['nickname'],
+                'uid_code'  => $uid_code,
+                'uid' => $uid,
+                'qr_code' => $qr_code
+            ]);
+
+            $createUserServiceService->create($request->all());
+            return redirect()->route('admin.quyy.index');
+        } catch (\Exception $e) {
+            return $e->getMessage();
         }
     }
 }

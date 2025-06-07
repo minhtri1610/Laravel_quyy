@@ -9,10 +9,10 @@
                 <span></span>
             </div>
             <div class="search-box pull-left">
-                <form action="#">
+                <!-- <form action="#">
                     <input type="text" name="search" placeholder="Search..." required>
                     <i class="ti-search"></i>
-                </form>
+                </form> -->
             </div>
         </div>
         <!-- profile info & task notification -->

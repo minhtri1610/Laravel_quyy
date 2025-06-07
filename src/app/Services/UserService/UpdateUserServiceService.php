@@ -52,4 +52,21 @@ class UpdateUserServiceService
             throw $exception;
         }
     }
+
+    public function updateByUid($inputs = [])
+    {
+        if (is_null($inputs)) {
+            $inputs = $this->request->except('action');
+        }
+        try {
+            return DB::transaction(function () use ($inputs) {
+                $user_service = $this->repository->findByUid($inputs['uid']);
+                $user_service = $this->repository->edit($user_service, $inputs);
+                $user_service = $this->repository->persist($user_service);
+                return $user_service;
+            });
+        } catch (Throwable $exception) {
+            throw $exception;
+        }
+    }
 }

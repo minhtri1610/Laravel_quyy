@@ -1,16 +1,13 @@
-@extends('client.layouts.main')
-
-@section('content') 
-<div class="wapper-register">
-    <div class="container d-flex justify-content-center align-items-center min-vh-100">
-        <div class="reg-content card p-4 shadow">
-            <div class="logo-head text-center">
-                <img width="80px" src="{{ asset('images/icon_banhxephap.png') }}" alt="">
-            </div>
-            <h2 class="text-center mb-4 fw-bold brow-text create-title">ĐĂNG KÝ QUY Y TAM BẢO</h2>
-            <h3 class="text-center fw-bold brow-text create-brand">CHÙA PHƯỚC LỘC</h3>
-            <p class="text-center mb-4 brow-text create-address">(Thôn Trinh Long Khánh, Xã Mỹ Cát, Huyện Phù Mỹ, Bình Định)</p>
-            <form action="{{ route('client.quyy.store') }}" method="POST">
+@extends('admin.layouts.main')
+@section('title', 'Chỉnh sửa')
+@section('content')
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h3 class="card-title">Chi tiết</h3>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('admin.quyy.update', ['uid' => $data->uid]) }}" method="POST">
                 @csrf
                 <div class="row mb-3">
                     <div class="col-md">
@@ -18,8 +15,21 @@
                             <i class="bi bi-person-fill"></i> Họ và Tên
                         </label>
                         <input type="text" class="form-control input-custom @error('full_name') is-invalid @enderror" 
-                            id="full_name" name="full_name" value="{{ old('full_name') }}">
+                            id="full_name" name="full_name" value="{{ $data->name ?? old('full_name') }}">
                         @error('full_name')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md">
+                        <label for="nickname" class="form-label">
+                            <i class="bi bi-person-fill"></i> Pháp Danh
+                        </label>
+                        <input type="text" class="form-control input-custom @error('nickname') is-invalid @enderror" 
+                            id="nickname" name="nickname" value="{{ $data->nickname ?? old('nickname') }}">
+                        @error('nickname')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
@@ -31,9 +41,9 @@
                             <i class="bi bi-gender-ambiguous"></i> Giới Tính
                         </label>
                         <select class="form-control input-custom @error('gender') is-invalid @enderror" name="gender">
-                            <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Nam</option>
-                            <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Nữ</option>
-                            <option value="other" {{ old('gender') == 'other' ? 'selected' : '' }}>Khác</option>
+                            <option value="male" {{ $data->gender == 'male' ? 'selected' : '' }}>Nam</option>
+                            <option value="female" {{ $data->gender == 'female' ? 'selected' : '' }}>Nữ</option>
+                            <option value="other" {{ $data->gender == 'other' ? 'selected' : '' }}>Khác</option>
                         </select>
                         @error('gender')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -44,7 +54,7 @@
                             <i class="bi bi-calendar-date-fill"></i> Ngày Sinh
                         </label>
                         <input type="date" class="form-control input-custom @error('birth_date') is-invalid @enderror" 
-                            id="birth_date" name="birth_date" value="{{ old('birth_date') }}">
+                            id="birth_date" name="birth_date" value="{{ $data->birth_date ?? old('birth_date') }}">
                         @error('birth_date')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -56,9 +66,9 @@
                         <label for="phone_number" class="form-label">
                             <i class="bi bi-telephone-fill"></i> Số Điện Thoại
                         </label>
-                        <input type="text" class="form-control input-custom @error('phone_number') is-invalid @enderror" 
-                            id="phone_number" name="phone_number" value="{{ old('phone_number') }}">
-                        @error('phone_number')
+                        <input type="text" class="form-control input-custom @error('phone') is-invalid @enderror" 
+                            id="phone_number" name="phone" value="{{ $data->phone ?? old('phone') }}">
+                        @error('phone')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
@@ -67,7 +77,7 @@
                             <i class="bi bi-envelope-fill"></i> Email
                         </label>
                         <input type="email" class="form-control input-custom @error('email') is-invalid @enderror" 
-                                id="email" name="email" value="{{ old('email') }}">
+                                id="email" name="email" value="{{  $data->email ?? old('email') }}">
                         @error('email')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -79,8 +89,8 @@
                         <label for="province" class="form-label">
                             <i class="bi bi-geo-alt-fill"></i> Tỉnh/Thành Phố
                         </label>
-                        <select class="form-control input-custom @error('province') is-invalid @enderror" name="province" id="province">
-                            <option value="" {{ old('province') == '' ? 'selected' : '' }} disabled selected hidden"></option>
+                        <select data-selected="{{ $data->country ?? old('province') }}" class="form-control input-custom @error('province') is-invalid @enderror" name="province" id="province">
+                            <option value=""></option>
                         </select>
                         @error('province')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -90,8 +100,8 @@
                         <label for="district" class="form-label">
                             <i class="bi bi-map-fill"></i> Quận/Huyện
                         </label>
-                        <select name="district" id="district" class="form-control input-custom @error('district') is-invalid @enderror">
-                            <option value="" {{ old('district') == '' ? 'selected' : '' }} disabled selected hidden"></option>
+                        <select name="district"  data-selected="{{ $data->city ?? old('district') }}" id="district" class="form-control input-custom @error('district') is-invalid @enderror">
+                            <option value=""></option>
                         </select>
                         @error('district')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -101,8 +111,8 @@
                         <label for="ward" class="form-label">
                             <i class="bi bi-house-door-fill"></i> Phường/Xã
                         </label>
-                        <select name="ward" id="ward" class="form-control input-custom @error('ward') is-invalid @enderror">
-                            <option value="" {{ old('ward') == '' ? 'selected' : '' }} disabled selected hidden"></option>
+                        <select name="ward" id="ward" data-selected="{{ $data->state ?? old('ward') }}" class="form-control input-custom @error('ward') is-invalid @enderror">
+                            <option value=""></option>
                         </select>
                         @error('ward')
                             <div class="invalid-feedback">{{ $message }}</div>
@@ -115,47 +125,23 @@
                         <i class="bi bi-geo-fill"></i> Địa Chỉ
                     </label>
                     <input type="text" class="form-control input-custom @error('address') is-invalid @enderror" 
-                        id="address" name="address" value="{{ old('address') }}">
+                        id="address" name="address" value="{{$data->address ?? old('address') }}">
                     @error('address')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
 
-                <div class="mb-3">
-                    <label for="note" class="form-label">
-                        <i class="bi bi-chat-left-text-fill"></i> Ghi Chú
-                    </label>
-                    <textarea class="form-control input-custom @error('note') is-invalid @enderror" 
-                            id="note" name="note" rows="3">{{ old('note') }}</textarea>
-                    @error('note')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                    @enderror
-                </div>
-
-                <div class="mb-3">
-                    <p><i>Kiểm tra thông tin đã nhập và nhấn nút [Đăng Ký] để gửi thông tin đăng ký Quy Y Tam Bảo
-</i></p>
-                    <p><b>Hỗ trợ kỹ thuật: {{config('conts.infos.phone_support')}}</b></p>
-                </div>
-
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary px-4 py-2" style="border-radius: 16px;">
-                        <i class="bi bi-send-fill"></i> Đăng Ký
+                        <i class="bi bi-send-fill"></i> Chỉnh sửa
                     </button>
                 </div>
             </form>
         </div>
     </div>
 </div>
-
-@include('client.layouts.menu-bar')
-
-@push('css')
-    <link rel="stylesheet" href="{{ asset('css/register-quyy.css') }}">
-@endpush
+@endsection
 
 @push('scripts')
     <script src="{{ asset('js/quyy.js') }}"></script>
 @endpush
-
-@endsection

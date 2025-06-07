@@ -50,7 +50,9 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    Danh Sách trống
+                                    <td colspan="6">
+                                        Danh Sách trống
+                                    </td>
                                 </tr>
                                 @endforelse
                             </tbody>
@@ -70,85 +72,9 @@
 @include('admin.quyy._modal-verify')
 @include('admin.commons._md-confirm',['action' => route('admin.quyy.delete'), 'title' => 'Xác nhận', 'des' => 'Xóa khỏi danh sách chờ duyệt?'])
 @push('scripts')
+    <script src="{{ asset('js/suggest-name.js') }}"></script>
     <script>
-        $(document).ready(function () {
-            // $('#quyyTable').DataTable({
-            //     processing: true,
-            //     serverSide: true, // Bật server-side processing
-            //     ajax: {
-            //         url: "{{ route('admin.quyy.list') }}", // URL lấy dữ liệu
-            //         type: "GET",
-            //     },
-            //     columns: [
-            //         { data: 'id', name: 'id' },
-            //         { data: 'name', name: 'name' },
-            //         { data: 'quyy_date', name: 'quyy_date' },
-            //         {
-            //             data: null,
-            //             render: function (data, type, row) {
-            //                 return '<a href="#">Sửa</a> | <a href="#">Xóa</a>';
-            //             }
-            //         }
-            //     ],
-            //     pageLength: 5, // Số bản ghi mỗi trang
-            //     lengthMenu: [5, 10, 25, 50], // Tùy chọn số bản ghi
-            //     paging: false
-            // });
-
-
-        });
-
-        $(document).on('click', '.btn-suguest-nickname', function (event) {
-            event.preventDefault();
-            let route = $(this).data('route-suggest');
-            let data = {
-                'route' : route,
-                'full_name': $('#modal-verify #m_fullname').val(),
-                'gender': $('#modal-verify #m_gender').html(),
-                '_token': $('meta[name="csrf-token"]').attr('content')
-            }
-            gererateNames(data);
-        })    
-
-        function gererateNames(data){
-            $('.loader').show();
-            $.ajax({
-                url: data.route,
-                type: 'POST',
-                data: data,
-                success: function (result) {
-                    $('.loader').hide();
-                    if(result.success == true){
-                        console.log(result.data);
-                        showNickName(result.data);
-                    } else{
-                        toastr.error(result.message, "Lỗi");
-                    }
-                },
-                error: function (error) {
-                    $('.loader').hide();
-                    console.log(error);
-                }
-            });
-        }
-
-        function showNickName(data){
-            let element = $('.m-list-nickname');
-            let html = '';
-            var nameArray = data.split(',').map(function(data) {
-                return data.trim(); // loại bỏ khoảng trắng thừa
-            });
-            $.each(nameArray, function (key, value) {
-                html += `<button type="button" onclick="setNickName(this)" class="btn btn-outline-success m-1" data-nickname="${value}">${value}</li>`;
-            });
-            element.html(html);
-        }
-
-        function setNickName(e){
-            let nickname = $(e).data('nickname');
-            $('#modal-verify #m_nick_name').val(nickname);
-        }
-
+        
         function getInfo(event){
             let data = {};
             let row = $(event).closest('tr');

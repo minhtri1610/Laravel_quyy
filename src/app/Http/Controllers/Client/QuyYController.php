@@ -25,7 +25,7 @@ class QuyYController extends Controller
         ];
         $users = [];
         if(!empty($key_word)){
-            $users = $listUserServices->paginate($conditions, 10);
+            $users = $listUserServices->paginate($conditions, 10)->appends(['key-word' => $key_word]);
         }
 
         return view('client.quyy.search', compact('users'));

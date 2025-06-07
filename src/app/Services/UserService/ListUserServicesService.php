@@ -49,7 +49,7 @@ class ListUserServicesService
     {
         if (! is_array($conditions)) {
             $conditions = $this->conditionQueryToArray($conditions);
-        }        
+        }
 
         return $this->repository->paginate($conditions, $perPage);
     }
