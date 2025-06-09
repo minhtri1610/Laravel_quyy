@@ -46,7 +46,6 @@ class CreateUserServiceService
         }
         $inputs = $this->sanitizeData($data_temp, $inputs);
 
-        dd($inputs);
         try {
             return DB::transaction(function () use ($inputs) {
                 $user_service = $this->repository->new($inputs);
@@ -84,7 +83,7 @@ class CreateUserServiceService
         if(!empty($inputs)){
             $nickname = $inputs['nickname'] ?? '';
         }
-        
+
         return [
             'name'            => trim($data_temp->full_name ?? 'No Name'),
             'gender'          => $data_temp->gender ?? 'male',
