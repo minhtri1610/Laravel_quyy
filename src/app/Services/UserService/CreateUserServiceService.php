@@ -80,6 +80,10 @@ class CreateUserServiceService
         if (is_array($data_temp)) {
             $data_temp = (object) $data_temp;
         }
+        $nickname = $data_temp->nickname ?? '';
+        if(!empty($inputs)){
+            $nickname = $inputs['nick_name'] ?? '';
+        }
         return [
             'name'            => trim($data_temp->full_name ?? 'No Name'),
             'gender'          => $data_temp->gender ?? 'male',
@@ -91,7 +95,7 @@ class CreateUserServiceService
             'password'        => $data_temp->password ?? Hash::make(Carbon::parse($data_temp->birth_date)->format('Y-m-d')),
             'phone'           => preg_replace('/[^0-9]/', '', $data_temp->phone_number ?? ''),
             'birth_date'      => $data_temp->birth_date ?? null,
-            'nickname'        => trim($inputs['nick_name'] ? $inputs['nick_name'] : $data_temp->nickname ?? ''),
+            'nickname'        => $nickname ?? '',
             'uid_code'        => $inputs['uid'] ?? $data_temp->uid_code,
             'is_active'       => config('conts.is_active'),
             'date_registered' => isset($data_temp->created_at) ? Carbon::parse($data_temp->created_at)->format('Y-m-d') : Carbon::now()->format('Y-m-d'),
