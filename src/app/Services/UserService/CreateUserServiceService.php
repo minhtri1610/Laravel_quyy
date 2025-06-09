@@ -82,6 +82,7 @@ class CreateUserServiceService
         }
         $nickname = $data_temp->nickname ?? '';
         if(!empty($inputs)){
+            dd($inputs);
             $nickname = $inputs['nick_name'] ?? '';
         }
         return [
