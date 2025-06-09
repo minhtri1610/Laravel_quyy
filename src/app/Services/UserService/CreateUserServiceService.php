@@ -46,6 +46,7 @@ class CreateUserServiceService
         }
         $inputs = $this->sanitizeData($data_temp, $inputs);
 
+        dd($inputs);
         try {
             return DB::transaction(function () use ($inputs) {
                 $user_service = $this->repository->new($inputs);

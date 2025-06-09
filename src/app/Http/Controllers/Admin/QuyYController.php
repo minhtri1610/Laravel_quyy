@@ -478,7 +478,6 @@ class QuyYController extends Controller
                 'uid' => $uid,
                 'qr_code' => $qr_code
             ]);
-            dd($request->all());
 
             $createUserServiceService->create($request->all());
             return redirect()->route('admin.quyy.index');
