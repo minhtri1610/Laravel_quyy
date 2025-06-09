@@ -82,9 +82,9 @@ class CreateUserServiceService
         }
         $nickname = $data_temp->nickname ?? '';
         if(!empty($inputs)){
-            dd($inputs);
-            $nickname = $inputs['nick_name'] ?? '';
+            $nickname = $inputs['nickname'] ?? '';
         }
+        
         return [
             'name'            => trim($data_temp->full_name ?? 'No Name'),
             'gender'          => $data_temp->gender ?? 'male',
