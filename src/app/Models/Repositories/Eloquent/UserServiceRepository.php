@@ -60,6 +60,10 @@ final class UserServiceRepository extends Repository implements UserServiceRepos
             $year = $conditions['year'];
             $queryBuilder->whereYear("{$table}.date_registered", $year);
         }
+
+        if(isset($conditions['no_nickname']) && $conditions['no_nickname'] !== null){
+            $queryBuilder->whereNull("{$table}.nickname");
+        }
     }
     public function getLatest(){
         return (static::$model)::orderBy('id', 'desc')->first();

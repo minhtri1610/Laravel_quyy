@@ -4,3 +4,6 @@ Tạo stub
 docker compose exec web php artisan stub:publish
 
 docker compose exec 
+
+
+composer require simplesoftwareio/simple-qrcode

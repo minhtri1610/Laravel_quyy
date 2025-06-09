@@ -15,8 +15,8 @@
                                         <input class="form-control" value="{{ $search }}" name="search" type="search" placeholder="Tìm tên, pháp danh, sdt..." aria-label="Search">
                                     </div>
                                     <div class="col-md-4 col-12  mb-3 d-flex align-items-center justify-content-center">
-                                        <label for="select-year">Chọn năm</label>
-                                        <select name="year" id="select-year" class="form-control w-25 m-2">
+                                        <label for="select-year" class="mb-0">Chọn năm</label>
+                                        <select name="year" id="select-year" class="form-control w-50 m-2">
                                             <option value="">Tất cả</option>
                                             @foreach($years as $year)
                                                 <option value="{{$year->year}}" {{ $year->year == $search_year ? 'selected' : '' }}>{{$year->year}}</option>
@@ -28,6 +28,11 @@
                                         <button class="btn btn-primary" type="submit">Tìm kiếm</button>
                                         <a class="btn btn-warning ml-2" href="{{route('admin.quyy.index')}}"><i class="ti-reload"></i></a>
                                     </div>
+                                </div>
+                                <div class=" d-flex align-items-center mb-3 ml-3">
+                                        <label for="no_nickname" class="mb-0">Không Pháp danh</label>
+                                        <input type="checkbox" @if($no_nickname) checked @endif class="form-check-input form-control border-1" value="1" name="no_nickname" id="no_nickname">
+                                   
                                 </div>
                             </form>
                         </div>

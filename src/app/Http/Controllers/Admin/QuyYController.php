@@ -37,18 +37,22 @@ class QuyYController extends Controller
         ];
         $search      = $request->get('search');
         $search_year = $request->get('year');
+        $no_nickname = $request->get('no_nickname');
+
         $conditions  = [
             // 'active' => 1,
             'search'   => $search,
             'year'     => $search_year,
+            'no_nickname' => $no_nickname,
             'orders'   => [
                 'id' => 'desc',
             ],
         ];
-        $lists = $listUserServicesService->paginate($conditions)->appends(['search' => $search, 'year' => $search_year]);
+        // dd($conditions);
+        $lists = $listUserServicesService->paginate($conditions)->appends(['search' => $search, 'year' => $search_year, 'no_nickname' => $no_nickname]);
         $years = DB::table('users')->select(DB::raw('YEAR(date_registered) as year'))->groupBy('year')->get();
 
-        return view('admin.quyy.index', compact('breadcrumbs', 'lists', 'search', 'search_year', 'years'));
+        return view('admin.quyy.index', compact('breadcrumbs', 'lists', 'search', 'search_year', 'years', 'no_nickname'));
     }
 
     public function list(
