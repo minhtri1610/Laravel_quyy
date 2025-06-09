@@ -80,7 +80,6 @@ class CreateUserServiceService
         if (is_array($data_temp)) {
             $data_temp = (object) $data_temp;
         }
-        dd($inputs);
         return [
             'name'            => trim($data_temp->full_name ?? 'No Name'),
             'gender'          => $data_temp->gender ?? 'male',
