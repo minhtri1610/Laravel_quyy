@@ -58,9 +58,10 @@
                                         <b>Địa chỉ:</b>  {{ convert_address($item) }}
                                     </td>
                                     <td>{{ date('d-m-Y', strtotime($item->date_registered))}} </td>
-                                    <td>
-                                        <a href="{{route('admin.quyy.detail', ['uid' => $item->uid])}}"><button class="btn btn-sm btn-primary">Chỉnh sửa</button></a>
-                                        <a href="{{route('client.quyy.detail', ['uid' => $item->uid])}}" target="_blank" class=" m-2 btn btn-sm btn-warning">Xem Thẻ</a>
+                                    <td class="d-flex flex-wrap">
+                                        <a href="{{route('admin.quyy.detail', ['uid' => $item->uid])}}"><button class="btn btn-sm btn-mwith btn-primary">Chỉnh sửa</button></a>
+                                        <a href="{{route('client.quyy.detail', ['uid' => $item->uid])}}" target="_blank" class="btn mt-2 btn-mwith btn-sm btn-warning">Xem Thẻ</a>
+                                        <a href="{{route('admin.quyy.destroy', ['uid' => $item->uid])}}"><button class="btn btn-sm mt-2 btn-mwith btn-danger">Xóa</button></a>
                                     </td>
                                 </tr>
                                 @empty

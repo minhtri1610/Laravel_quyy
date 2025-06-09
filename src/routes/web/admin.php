@@ -17,6 +17,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => ('App\Http\C
             Route::get('/danh-sach-cho-duyet', 'QuyYController@list')->name('list');
             Route::get('/them-phat-tu', 'QuyYController@create')->name('create');
             Route::post('/them-phat-tu', 'QuyYController@store')->name('store');
+            Route::get('xoa/{uid?}', 'QuyYController@destroyUser')->name('destroy');
 
             Route::get('/chi-tiet-phat-tu/{uid}', 'QuyYController@detail')->name('detail');
             Route::post('/chi-tiet-phat-tu/{uid}', 'QuyYController@update')->name('update');

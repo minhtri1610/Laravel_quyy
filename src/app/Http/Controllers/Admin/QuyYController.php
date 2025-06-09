@@ -296,6 +296,30 @@ class QuyYController extends Controller
         }
     }
 
+    public function destroyUser(
+        Request $request,
+        ListUserServicesService $listUserServicesService,
+        $uid
+    ){
+        try {
+            $conditions = [
+                'uid' => $uid,
+            ];
+
+            $data = $listUserServicesService->list($conditions)->first();
+            if(empty($data)){
+                return abort(404);
+            }
+            $data->delete();
+            return redirect()->route('admin.quyy.index');
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function gererateName(
         Request $request,
         ListTemporaryUserServicesService $listTemporaryUserServicesService,
