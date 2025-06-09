@@ -92,7 +92,7 @@ class CreateUserServiceService
             'password'        => $data_temp->password ?? Hash::make(Carbon::parse($data_temp->birth_date)->format('Y-m-d')),
             'phone'           => preg_replace('/[^0-9]/', '', $data_temp->phone_number ?? ''),
             'birth_date'      => $data_temp->birth_date ?? null,
-            'nickname'        => trim($inputs['nick_name'] ?? ''),
+            'nickname'        => trim($inputs['nick_name'] ? $inputs['nick_name'] : $data_temp->nickname ?? ''),
             'uid_code'        => $inputs['uid'] ?? $data_temp->uid_code,
             'is_active'       => config('conts.is_active'),
             'date_registered' => isset($data_temp->created_at) ? Carbon::parse($data_temp->created_at)->format('Y-m-d') : Carbon::now()->format('Y-m-d'),
