@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('state')->nullable();//huyện
             $table->string('address')->nullable();
             $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('date_registered')->nullable();
             $table->string('password');
             $table->text('qr_code')->nullable();
             $table->rememberToken();
