@@ -177,7 +177,6 @@ class QuyYController extends Controller
                         'city' => $data['city'] ?? null,
                         'state' => $data['state'] ?? null,
                         'address' => $data['address'] ?? null,
-                        'gender' => $data['gioi_tinh'] ?: null,
                         'phone' => $phone,
                         'birth_date' => !empty($data['nam_sinh']) ? formatBirthDate($data['nam_sinh']) : null,
                         'date_registered' => Carbon::createFromFormat('d/m/Y', $data['ngay_quy_y'])->format('Y-m-d'),
