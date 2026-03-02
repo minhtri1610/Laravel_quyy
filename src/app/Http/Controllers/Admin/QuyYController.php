@@ -29,22 +29,21 @@ class QuyYController extends Controller
     public function index(
         ListUserServicesService $listUserServicesService,
         Request $request,
-    )
-    {
+    ) {
         $breadcrumbs = [
             ['title' => 'QL Quy Y', 'url' => route('admin.quyy.index')],
             ['title' => 'Danh Sách Quy Y', 'url' => null]
         ];
-        $search      = $request->get('search');
+        $search = $request->get('search');
         $search_year = $request->get('year');
         $no_nickname = $request->get('no_nickname');
 
-        $conditions  = [
+        $conditions = [
             // 'active' => 1,
-            'search'   => $search,
-            'year'     => $search_year,
+            'search' => $search,
+            'year' => $search_year,
             'no_nickname' => $no_nickname,
-            'orders'   => [
+            'orders' => [
                 'id' => 'desc',
             ],
         ];
@@ -58,7 +57,7 @@ class QuyYController extends Controller
     public function list(
         ListTemporaryUserServicesService $listTemporaryUserServicesService,
         Request $request,
-    ){
+    ) {
         $breadcrumbs = [
             ['title' => 'QL Quy Y', 'url' => route('admin.quyy.index')],
             ['title' => 'Danh Sách Quy Y', 'url' => null]
@@ -70,10 +69,10 @@ class QuyYController extends Controller
             ],
             'join_tables' => [
                 [
-                    "type"   => "LEFT",
-                    "table"  => "users",
+                    "type" => "LEFT",
+                    "table" => "users",
                     "second" => "users.id",
-                    "first"  => "temporary_users.temporary_user_id"
+                    "first" => "temporary_users.temporary_user_id"
                 ]
 
             ],
@@ -103,7 +102,7 @@ class QuyYController extends Controller
     public function postImport(
         ImportRequest $request,
         ImportUserServiceService $importUserService,
-    ){
+    ) {
         $validated = $request->validated();
         try {
             $file = $request->file('file');
@@ -115,7 +114,7 @@ class QuyYController extends Controller
             do {
                 $header = fgetcsv($handle, 0, ',', '"');
             } while ($header && count(array_filter($header)) === 0);
-        
+
             if (!$header || count(array_filter($header)) < 2) {
                 return back()->withErrors('File CSV không có tiêu đề hợp lệ.');
             }
@@ -125,10 +124,10 @@ class QuyYController extends Controller
             }
 
             $header = $this->convertToSnakeHeaders($header);
-    
+
             $insertData = [];
             $lineNumber = 1;
-            
+
             while (($row = fgetcsv($handle, 0, ',', '"')) !== false) {
                 $lineNumber++;
                 if (count($row) === 1) {
@@ -143,7 +142,7 @@ class QuyYController extends Controller
                 if (count(array_filter($row)) === 0) {
                     continue;
                 }
-            
+
                 // Kiểm tra số cột
                 if (count($header) !== count($row)) {
                     Log::warning("Lỗi dòng $lineNumber: số cột không khớp", [
@@ -152,42 +151,42 @@ class QuyYController extends Controller
                     ]);
                     continue;
                 }
-            
+
                 $data = array_combine($header, $row);
-            
+
                 if ($data && !empty($data['ten'])) {
-                    
+
                     $arr_address = $data['dia_chi'] ? explode(',', $data['dia_chi']) : [];
-                    $data['country']   = $arr_address[3] ?? null;
-                    $data['city']      = $arr_address[2] ?? null;
-                    $data['state']     = $arr_address[1] ?? null;
-                    $data['address']   = $arr_address[0] ?? null;
+                    $data['country'] = $arr_address[3] ?? null;
+                    $data['city'] = $arr_address[2] ?? null;
+                    $data['state'] = $arr_address[1] ?? null;
+                    $data['address'] = $arr_address[0] ?? null;
                     $uid = Str::uuid()->toString();
                     $phone = $data['sdt'] ? preg_replace('/[^0-9]/', '', $data['sdt']) : null;
-                    $hash = md5($uid.$phone)."_".$uid;
+                    $hash = md5($uid . $phone) . "_" . $uid;
                     $url = route('client.quyy.detail', ['uid' => $hash]);
                     $qr_code = $this->createQR($url);
 
                     $insertData[] = [
-                        'uid_code'        => $data['ma_so_phai'] ?? null,
-                        'uid'             => $uid,
-                        'email'           => $data['email'] ?? null,
-                        'name'            => $data['ten'] ?? null,
-                        'nickname'        => $data['phap_danh'] ?? null,
-                        'country'         => $data['country'] ?? null,
-                        'city'            => $data['city'] ?? null,
-                        'state'           => $data['state'] ?? null,
-                        'address'         => $data['address'] ?? null,
-                        'gender'          => $data['gioi_tinh'] ? : null,
-                        'phone'           => $phone,
+                        'uid_code' => $data['ma_so_phai'] ?? null,
+                        'uid' => $uid,
+                        'email' => $data['email'] ?? null,
+                        'name' => $data['ten'] ?? null,
+                        'nickname' => $data['phap_danh'] ?? null,
+                        'country' => $data['country'] ?? null,
+                        'city' => $data['city'] ?? null,
+                        'state' => $data['state'] ?? null,
+                        'address' => $data['address'] ?? null,
+                        'gender' => $data['gioi_tinh'] ?: null,
+                        'phone' => $phone,
                         'birth_date' => !empty($data['nam_sinh']) ? formatBirthDate($data['nam_sinh']) : null,
                         'date_registered' => Carbon::createFromFormat('d/m/Y', $data['ngay_quy_y'])->format('Y-m-d'),
-                        'is_active'       => 1,
-                        'gender'          => $data['gioi_tinh'] == 'Nam' ? 'male' : 'female' ?? null,
-                        'qr_code'         => $qr_code ?? null,
-                        'created_at'      => now(),
-                        'updated_at'      => now(),
-                        'password'        => Hash::make($phone),
+                        'is_active' => 1,
+                        'gender' => $data['gioi_tinh'] == 'Nam' ? 'male' : 'female' ?? null,
+                        'qr_code' => $qr_code ?? null,
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                        'password' => Hash::make($phone),
                     ];
                 }
             }
@@ -195,7 +194,7 @@ class QuyYController extends Controller
             try {
                 DB::BeginTransaction();
 
-                if(!empty($insertData)){
+                if (!empty($insertData)) {
                     $chunk = array_chunk($insertData, 50);
                     foreach ($chunk as $item) {
                         $importUserService->import($item);
@@ -304,14 +303,14 @@ class QuyYController extends Controller
         Request $request,
         ListUserServicesService $listUserServicesService,
         $uid
-    ){
+    ) {
         try {
             $conditions = [
                 'uid' => $uid,
             ];
 
             $data = $listUserServicesService->list($conditions)->first();
-            if(empty($data)){
+            if (empty($data)) {
                 return abort(404);
             }
             $data->delete();
@@ -327,51 +326,51 @@ class QuyYController extends Controller
     public function gererateName(
         Request $request,
         ListTemporaryUserServicesService $listTemporaryUserServicesService,
-    ){
+    ) {
         try {
             $gender = null;
             $first_name_start = "Tâm Viên, Tuệ Quang, Tâm Như, Tuệ Minh";
             $real_name = $request->full_name;
             $api_key = config('conts.GEMINI_API_KEY');
 
-            if($request->has('gender') && $request->get('gender') == 'Nam'){
+            if ($request->has('gender') && $request->get('gender') == 'Nam') {
                 $gender = 'Nam';
                 $first_name_start = "Tuệ Quang, Tuệ Minh, Tuệ Đức";
             }
-            if($request->has('gender') && $request->get('gender') == 'Nữ'){
+            if ($request->has('gender') && $request->get('gender') == 'Nữ') {
                 $gender = 'Nữ';
                 $first_name_start = "Tâm Viên, Tâm Như, Tâm Thanh";
             }
-            $prompt = 'Hãy liệt kê 10 tên pháp danh gồm 3 từ, mỗi tên mang ý nghĩa thanh tịnh, trí tuệ, từ bi. Tất cả tên phải bắt đầu bằng các từ như: '.$first_name_start;
-            if($gender != null){
-                $prompt.= "Người cần đặt pháp danh có giới tính .".$gender;
+            $prompt = 'Hãy liệt kê 10 tên pháp danh gồm 3 từ, mỗi tên mang ý nghĩa thanh tịnh, trí tuệ, từ bi. Tất cả tên phải bắt đầu bằng các từ như: ' . $first_name_start;
+            if ($gender != null) {
+                $prompt .= "Người cần đặt pháp danh có giới tính ." . $gender;
             }
 
-            if(!empty($real_name)){
-                $prompt.="Có tên thật là: ".$real_name;
+            if (!empty($real_name)) {
+                $prompt .= "Có tên thật là: " . $real_name;
             }
 
-            $prompt.= 'Chỉ liệt kê tên, không tiêu đề, không giải thích, không đánh số. Mỗi tên cách nhau bởi dấu ,';
+            $prompt .= 'Chỉ liệt kê tên, không tiêu đề, không giải thích, không đánh số. Mỗi tên cách nhau bởi dấu ,';
             $prompt .= ' Hãy sáng tạo theo cảm hứng ngẫu nhiên, nhưng phải kết quả tên không vượt quá 3 từ. Thời điểm hiện tại là: ' . now()->toDateTimeString();
 
             $response = Http::withHeaders([
                 'Content-Type' => 'application/json'
             ])->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key={$api_key}", [
-                'contents' => [
-                    [
-                        'parts' => [
+                        'contents' => [
                             [
-                                'text' => "{$prompt}"
+                                'parts' => [
+                                    [
+                                        'text' => "{$prompt}"
+                                    ]
+                                ]
                             ]
+                        ],
+                        'generationConfig' => [
+                            'temperature' => 1.0,
+                            'topK' => 40,
+                            'topP' => 0.95,
                         ]
-                    ]
-                ],
-                'generationConfig' => [
-                    'temperature' => 1.0,
-                    'topK' => 40,
-                    'topP' => 0.95,
-                ]
-            ]);
+                    ]);
 
             if ($response->successful()) {
                 return response()->json([
@@ -414,14 +413,14 @@ class QuyYController extends Controller
         ListUserServicesService $listUserServicesService,
         UpdateUserServiceService $updateUserServiceService,
         $uid
-    ){
+    ) {
         try {
             $conditions = [
                 'uid' => $uid,
             ];
 
             $data = $listUserServicesService->list($conditions)->first();
-            if(empty($data)){
+            if (empty($data)) {
                 return abort(404);
             }
 
@@ -430,6 +429,7 @@ class QuyYController extends Controller
                 'country' => $request->province,
                 'city' => $request->district,
                 'state' => $request->ward,
+                'date_registered' => $request->date_registered ? Carbon::parse($request->date_registered)->format('Y-m-d') : Carbon::now()->format('Y-m-d'),
             ]);
 
             $updateUserServiceService->updateByUid($request->all());
@@ -443,22 +443,24 @@ class QuyYController extends Controller
     }
 
     public function store(
-        CreateUserFromAdminRequest $request, 
+        CreateUserFromAdminRequest $request,
         CreateUserServiceService $createUserServiceService,
         ListUserServicesService $listUserServicesService
-    ){
+    ) {
         try {
             $data = $request->all();
 
             $conditions_check = [
                 'nick_name' => $data['nickname']
             ];
-            $check_nick_name = $listUserServicesService->list($conditions_check);
+            if (isset($data['nick_name']) && $data['nick_name'] != '') {
+                $check_nick_name = $listUserServicesService->list($conditions_check);
 
-            if (!$check_nick_name->isEmpty()) {
-                return redirect()->back()
-                ->withErrors(['nickname' => 'Pháp Danh đã tồn tại, vui lòng đặt tên khác!'])
-                ->withInput();
+                if (!$check_nick_name->isEmpty()) {
+                    return redirect()->back()
+                        ->withErrors(['nickname' => 'Pháp Danh đã tồn tại, vui lòng đặt tên khác!'])
+                        ->withInput();
+                }
             }
 
             $last_user = $listUserServicesService->getLastest();
@@ -469,16 +471,16 @@ class QuyYController extends Controller
 
             $uid = Str::uuid()->toString();
             $phone = '';
-            if(isset($request->phone_number)){
+            if (isset($request->phone_number)) {
                 $phone = $request->phone_number ? preg_replace('/[^0-9]/', '', $request->phone_number) : null;
             }
-            $hash = md5($uid.$phone)."_".$uid;
+            $hash = md5($uid . $phone) . "_" . $uid;
             $url = route('client.quyy.detail', ['uid' => $hash]);
             $qr_code = $this->createQR($url);
 
             $request->merge([
                 'nick_name' => $data['nickname'],
-                'uid_code'  => $uid_code,
+                'uid_code' => $uid_code,
                 'uid' => $uid,
                 'qr_code' => $qr_code
             ]);

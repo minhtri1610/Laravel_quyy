@@ -28,7 +28,7 @@ class CreateUserServiceService
     public function __construct(UserServiceRepositoryInterface $repository, Request $request)
     {
         $this->repository = $repository;
-        $this->request    = $request;
+        $this->request = $request;
 
         $this->setFormRequest(new SaveUserServiceRequest());
         $this->init();
@@ -80,26 +80,26 @@ class CreateUserServiceService
             $data_temp = (object) $data_temp;
         }
         $nickname = $data_temp->nickname ?? '';
-        if(!empty($inputs)){
+        if (!empty($inputs)) {
             $nickname = $inputs['nickname'] ?? '';
         }
 
         return [
-            'name'            => trim($data_temp->full_name ?? 'No Name'),
-            'gender'          => $data_temp->gender ?? 'male',
-            'address'         => trim($data_temp->address ?? ''),
-            'country'         => trim($data_temp->province ?? ''),
-            'city'            => trim($data_temp->district ?? ''),
-            'state'           => trim($data_temp->ward ?? ''),
-            'email'           => strtolower(trim($data_temp->email ?? '')),
-            'password'        => $data_temp->password ?? Hash::make(Carbon::parse($data_temp->birth_date)->format('Y-m-d')),
-            'phone'           => preg_replace('/[^0-9]/', '', $data_temp->phone_number ?? ''),
-            'birth_date'      => $data_temp->birth_date ?? null,
-            'nickname'        => $nickname ?? '',
-            'uid_code'        => $inputs['uid'] ?? $data_temp->uid_code,
-            'is_active'       => config('conts.is_active'),
-            'date_registered' => isset($data_temp->created_at) ? Carbon::parse($data_temp->created_at)->format('Y-m-d') : Carbon::now()->format('Y-m-d'),
-            'uid'             => Str::uuid()->toString(),
+            'name' => trim($data_temp->full_name ?? 'No Name'),
+            'gender' => $data_temp->gender ?? 'male',
+            'address' => trim($data_temp->address ?? ''),
+            'country' => trim($data_temp->province ?? ''),
+            'city' => trim($data_temp->district ?? ''),
+            'state' => trim($data_temp->ward ?? ''),
+            'email' => strtolower(trim($data_temp->email ?? '')),
+            'password' => $data_temp->password ?? Hash::make(Carbon::parse($data_temp->birth_date)->format('Y-m-d')),
+            'phone' => preg_replace('/[^0-9]/', '', $data_temp->phone_number ?? ''),
+            'birth_date' => $data_temp->birth_date ?? null,
+            'nickname' => $nickname ?? '',
+            'uid_code' => $inputs['uid'] ?? $data_temp->uid_code,
+            'is_active' => config('conts.is_active'),
+            'date_registered' => !empty($data_temp->date_registered) ? Carbon::parse($data_temp->date_registered)->format('Y-m-d') : (isset($data_temp->created_at) ? Carbon::parse($data_temp->created_at)->format('Y-m-d') : Carbon::now()->format('Y-m-d')),
+            'uid' => Str::uuid()->toString(),
         ];
     }
 }

@@ -23,7 +23,7 @@ class CreateUserFromAdminRequest extends FormRequest
     {
         return [
             'full_name' => 'required',
-            'email' => 'sometimes|email',
+            'email' => 'nullable|email',
         ];
     }
 }

@@ -39,7 +39,7 @@
         </div>
 
         <div class="row mb-3">
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <label for="gender" class="form-label">
                     <i class="bi bi-gender-ambiguous"></i> Giới Tính
                 </label>
@@ -52,13 +52,23 @@
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <label for="birth_date" class="form-label">
                     <i class="bi bi-calendar-date-fill"></i> Ngày Sinh
                 </label>
                 <input type="date" class="form-control input-custom @error('birth_date') is-invalid @enderror"
                     id="birth_date" name="birth_date" value="{{ old('birth_date') }}">
                 @error('birth_date')
+                <div class="invalid-feedback">{{ $message }}</div>
+                @enderror
+            </div>
+            <div class="col-md-4">
+                <label for="date_registered" class="form-label">
+                    <i class="bi bi-calendar-check-fill"></i> Ngày Quy Y
+                </label>
+                <input type="date" class="form-control input-custom @error('date_registered') is-invalid @enderror"
+                    id="date_registered" name="date_registered" value="{{ old('date_registered', date('Y-m-d')) }}">
+                @error('date_registered')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>

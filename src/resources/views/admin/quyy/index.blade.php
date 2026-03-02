@@ -24,7 +24,9 @@
                                         </select>
                                         
                                     </div>
+                                    
                                     <div class="col-md-2 col-12 mb-3 d-flex align-items-center justify-content-center">
+                                        <a class="btn btn-success mr-2" href="{{route('admin.quyy.create')}}"><i class="ti-plus"></i></a>
                                         <button class="btn btn-primary" type="submit">Tìm kiếm</button>
                                         <a class="btn btn-warning ml-2" href="{{route('admin.quyy.index')}}"><i class="ti-reload"></i></a>
                                     </div>
