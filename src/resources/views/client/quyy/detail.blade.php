@@ -24,8 +24,8 @@
             /* Metallic Gold */
             outline-offset: -12px;
             padding: 60px 45px 50px;
-            width: 100%;
-            max-width: 700px;
+            width: 700px; /* Fixed width to mimic PC view on mobile */
+            min-width: 700px;
             border-radius: 4px;
             box-shadow:
                 0 15px 40px rgba(0, 0, 0, 0.25),
@@ -109,9 +109,9 @@
             margin-bottom: 15px;
         }
 
-        .logo-center a img {
-            width: 70px;
-            height: 70px;
+        .logo-center img {
+            width: 120px;
+            height: 120px;
             object-fit: contain;
         }
 
@@ -180,13 +180,24 @@
         .footer {
             display: flex;
             justify-content: space-between;
-            align-items: flex-end;
+            align-items: flex-start;
             font-family: 'Lora', serif;
             font-size: 16px;
             color: #4e342e;
-            margin-top: 40px;
+            margin-top: 30px;
             border-top: 1px solid rgba(212, 175, 55, 0.4);
             padding-top: 20px;
+        }
+
+        .footer .left-section {
+            text-align: left;
+        }
+
+        .footer .right-section {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .footer p {
@@ -202,7 +213,7 @@
 
         .stamp-placeholder {
             text-align: center;
-            margin-top: -10px;
+            margin-top: 10px;
         }
 
         .stamp-placeholder .text {
@@ -211,7 +222,7 @@
             color: #b8860b;
             text-transform: uppercase;
             letter-spacing: 1px;
-            margin-bottom: 40px;
+            margin-bottom: 0px;
         }
 
         .buddhist-vows {
@@ -275,47 +286,15 @@
         }
 
         @media (max-width: 600px) {
+            .certificate-wrapper {
+                justify-content: flex-start;
+                padding: 1rem 15px;
+                overflow-x: auto; /* Enable scrolling on smaller screens wrapper */
+            }
+
             .certificate {
-                padding: 100px 20px 30px;
-                outline-offset: -8px;
-                box-shadow: inset 0 0 0 10px #fcf8e8, inset 0 0 0 11px rgba(139, 0, 0, 0.4);
-            }
-
-            .certificate .qr_code {
-                top: 20px;
-                right: 50%;
-                transform: translateX(50%);
-            }
-
-            .logo-center {
-                display: none;
-                /* Hide top logo on mobile if QR is centered */
-            }
-
-            .certificate h1 {
-                font-size: 30px;
-                letter-spacing: 2px;
-            }
-
-            .details .info-row {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-
-            .details .info-row .value {
-                width: 100%;
-                margin-top: 5px;
-            }
-
-            .details .d-name {
-                font-size: 38px;
-            }
-
-            .footer {
-                flex-direction: column;
-                align-items: center;
-                gap: 15px;
-                text-align: center;
+                transform-origin: top left;
+                /* Note: We keep original PC dimensions to allow zoom and pan */
             }
         }
     </style>
@@ -417,27 +396,25 @@
                     </div>
 
                     <div class="footer">
-                        <div>
+                        <div class="left-section">
                             <p>Số Điệp/Mã: <span class="val">{{$user->uid_code}}</span></p>
                         </div>
-
-                        <div class="stamp-placeholder">
-                            <div class="text">
-                                Bổn sư truyền thọ<br>
-                                <span
-                                    style="font-size: 16px; font-weight: 700; color: #b71c1c; margin-top: 8px; display: inline-block;">ĐĐ.
-                                    Thích Tánh Minh</span>
-                            </div>
-                            <div class="stamp mb-5">
-                                <img src="{{asset('/images/stamp.png')}}" alt="Stamp">
-                            </div>
-                        </div>
-
-                        <div style="text-align: right;">
+                        <div class="right-section">
                             <p>Ngày <span class="val">{{ date('d', strtotime($user->date_registered))}}</span>
                                 tháng <span class="val">{{ date('m', strtotime($user->date_registered))}}</span>
                                 năm <span class="val">{{ date('Y', strtotime($user->date_registered))}}</span>
                             </p>
+                            <div class="stamp-placeholder">
+                                <div class="text">
+                                    Bổn sư truyền thọ<br>
+                                    <span
+                                        style="font-size: 16px; font-weight: 700; color: #b71c1c; margin-top: 8px; display: inline-block;">ĐĐ.
+                                        Thích Tánh Minh</span>
+                                </div>
+                                <div class="stamp mb-5">
+                                    <img width="250px" height="120px" src="{{asset('/images/stamp.png')}}" alt="Stamp">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

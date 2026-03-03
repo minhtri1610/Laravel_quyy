@@ -96,10 +96,11 @@ class CreateUserServiceService
             'phone' => preg_replace('/[^0-9]/', '', $data_temp->phone_number ?? ''),
             'birth_date' => $data_temp->birth_date ?? null,
             'nickname' => $nickname ?? '',
-            'uid_code' => $inputs['uid'] ?? $data_temp->uid_code,
+            'uid_code' => $data_temp->uid_code ?? ($inputs['uid_code'] ?? null),
             'is_active' => config('conts.is_active'),
             'date_registered' => !empty($data_temp->date_registered) ? Carbon::parse($data_temp->date_registered)->format('Y-m-d') : (isset($data_temp->created_at) ? Carbon::parse($data_temp->created_at)->format('Y-m-d') : Carbon::now()->format('Y-m-d')),
-            'uid' => Str::uuid()->toString(),
+            'uid' => $data_temp->uid ?? ($inputs['uid'] ?? Str::uuid()->toString()),
+            'qr_code' => $data_temp->qr_code ?? ($inputs['qr_code'] ?? null),
         ];
     }
 }

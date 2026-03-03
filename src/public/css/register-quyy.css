@@ -1,60 +1,105 @@
-.wapper-register{
-    /* background-image: linear-gradient(0deg, #FFEB3B, transparent); */
+/* Reset/Global */
+.wapper-register {
+    background-color: #f6efe8;
+    background-image: url('https://www.transparenttextures.com/patterns/rice-paper-3.png');
+    min-height: 100vh;
+    padding: 3rem 15px;
 }
 
-.wapper-register .reg-content{
-    max-width: 60%;
-    margin: 50px auto;
-    padding: 20px;
-    background: #fff;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+/* Base Card Content */
+.reg-content.card {
+    background-color: #fffdf5 !important;
+    border: 1px solid #d4af37 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 10px 40px rgba(139, 0, 0, 0.15) !important;
+    position: relative;
+    overflow: hidden;
+    max-width: 650px;
+    margin: auto;
+    width: 100%;
 }
 
-.form-control {
-    border-radius: 24px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    font-weight: 100;
+.reg-content.card::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border: 3px solid #8b0000;
+    pointer-events: none;
+    border-radius: 12px;
 }
 
+/* Forms */
 .form-label {
-    font-weight: 400;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    color: #4e1500;
+    font-weight: 600;
+    color: #4e342e;
+    font-size: 14.5px;
+    margin-bottom: 5px;
 }
 
 .form-label i {
+    color: #8b0000;
+}
+
+.input-custom {
+    border-radius: 4px;
+    border: 1px solid #d0baa8;
+    background-color: #faf7f2;
+    padding: 10px 15px;
+    font-size: 15px;
+    transition: all 0.2s ease-in-out;
+}
+
+.input-custom:focus {
+    background-color: #ffffff;
+    border-color: #d4af37;
+    box-shadow: 0 0 0 0.2rem rgba(212, 175, 55, 0.25);
+    outline: none;
+}
+
+/* Typography styles */
+.create-title {
+    color: #b71c1c;
+    font-size: 26px;
+    letter-spacing: 2px;
+    margin-top: 10px;
+}
+
+.create-brand {
+    color: #b8860b;
+    font-size: 22px;
+    letter-spacing: 1px;
+}
+
+.create-address {
+    font-size: 14px;
+    font-style: italic;
     color: #795548;
-    margin-right: 5px;
-}
-.wapper-register{
-    background-image: url('/images/bg-quyy2.jpg');
-    background-repeat: no-repeat;
-    background-position: center;
-    min-height: 100vh;
-    background-size: cover;
 }
 
-@media screen and (max-width: 768px) {
-    .wapper-register .reg-content{
-        max-width: unset;
-    }
+/* Submit Button */
+.btn-primary {
+    background-color: #8b0000 !important;
+    border-color: #8b0000 !important;
+    color: #fff !important;
+    font-weight: bold;
+    letter-spacing: 1px;
+    font-size: 16px;
+    transition: all 0.3s;
+    text-transform: uppercase;
 }
 
-@media screen and (max-width: 414px) {
-    .wapper-register .create-title{
-        margin-bottom: 1rem!important;
-        font-size: 1.1rem;
-    }
-    .wapper-register .create-brand{
-        font-size: 1.3rem;
-        margin-bottom: 1.4rem;
-    }
+.btn-primary:hover {
+    background-color: #b71c1c !important;
+    border-color: #b71c1c !important;
+    box-shadow: 0 4px 10px rgba(139, 0, 0, 0.3);
+}
 
-    .wapper-register .create-address{
-        display: none;
-    }
+.logo-head img {
+    border-radius: 50%;
+    box-shadow: 0 4px 10px rgba(212, 175, 55, 0.4);
+    background-color: #fff;
+    padding: 2px;
 }
