@@ -46,10 +46,16 @@
                     <li><a href="https://chuaphuocloc.com/"
                             class="btn pg-btn btn-lg rounded-circle d-flex justify-content-center align-items-center shadow"><i
                                 class="bi bi-house-door-fill"></i></a></li>
+                    <li><a href="#" id="toggle-music"
+                            class="btn pg-btn btn-lg rounded-circle d-flex justify-content-center align-items-center shadow"><i
+                                class="bi bi-volume-up-fill" id="music-icon"></i></a></li>
                     <li><a href="{{ route('admin.login') }}"
                             class="btn pg-btn btn-lg rounded-circle d-flex justify-content-center align-items-center shadow"><i
                                 class="bi bi-gear"></i></a></li>
                 </ul>
+                <audio id="bg-music" loop style="display:none;">
+                    <source src="{{ asset('mp3/m01.mp3') }}" type="audio/mpeg">
+                </audio>
             </div>
         </div>
     </div>
@@ -57,7 +63,7 @@
 @push('css')
     <link rel="stylesheet" href="{{ asset('css/sakura.css') }}" type="text.css">
     <style>
-        .wapper-home {
+        .sakura { pointer-events: none; position: fixed !important; z-index: 9999; } @-webkit-keyframes fall { 0% { opacity: 0.9; top: -10vh; } 100% { opacity: 0.2; top: 100vh; } } @keyframes fall { 0% { opacity: 0.9; top: -10vh; } 100% { opacity: 0.2; top: 100vh; } } @-webkit-keyframes blow-soft-left { 0% { margin-left: 0; } 100% { margin-left: -50vw; } } @keyframes blow-soft-left { 0% { margin-left: 0; } 100% { margin-left: -50vw; } } @-webkit-keyframes blow-medium-left { 0% { margin-left: 0; } 100% { margin-left: -100vw; } } @keyframes blow-medium-left { 0% { margin-left: 0; } 100% { margin-left: -100vw; } } @-webkit-keyframes blow-soft-right { 0% { margin-left: 0; } 100% { margin-left: 50vw; } } @keyframes blow-soft-right { 0% { margin-left: 0; } 100% { margin-left: 50vw; } } @-webkit-keyframes blow-medium-right { 0% { margin-left: 0; } 100% { margin-left: 100vw; } } @keyframes blow-medium-right { 0% { margin-left: 0; } 100% { margin-left: 100vw; } } @-webkit-keyframes sway-0 { 0% { transform: rotate(-5deg); } 40% { transform: rotate(28deg); } 100% { transform: rotate(3deg); } } @keyframes sway-0 { 0% { transform: rotate(-5deg); } 40% { transform: rotate(28deg); } 100% { transform: rotate(3deg); } } @-webkit-keyframes sway-1 { 0% { transform: rotate(10deg); } 40% { transform: rotate(43deg); } 100% { transform: rotate(15deg); } } @keyframes sway-1 { 0% { transform: rotate(10deg); } 40% { transform: rotate(43deg); } 100% { transform: rotate(15deg); } } @-webkit-keyframes sway-2 { 0% { transform: rotate(15deg); } 40% { transform: rotate(56deg); } 100% { transform: rotate(22deg); } } @keyframes sway-2 { 0% { transform: rotate(15deg); } 40% { transform: rotate(56deg); } 100% { transform: rotate(22deg); } } @-webkit-keyframes sway-3 { 0% { transform: rotate(25deg); } 40% { transform: rotate(74deg); } 100% { transform: rotate(37deg); } } @keyframes sway-3 { 0% { transform: rotate(25deg); } 40% { transform: rotate(74deg); } 100% { transform: rotate(37deg); } } @-webkit-keyframes sway-4 { 0% { transform: rotate(40deg); } 40% { transform: rotate(68deg); } 100% { transform: rotate(25deg); } } @keyframes sway-4 { 0% { transform: rotate(40deg); } 40% { transform: rotate(68deg); } 100% { transform: rotate(25deg); } } @-webkit-keyframes sway-5 { 0% { transform: rotate(50deg); } 40% { transform: rotate(78deg); } 100% { transform: rotate(40deg); } } @keyframes sway-5 { 0% { transform: rotate(50deg); } 40% { transform: rotate(78deg); } 100% { transform: rotate(40deg); } } @-webkit-keyframes sway-6 { 0% { transform: rotate(65deg); } 40% { transform: rotate(92deg); } 100% { transform: rotate(58deg); } } @keyframes sway-6 { 0% { transform: rotate(65deg); } 40% { transform: rotate(92deg); } 100% { transform: rotate(58deg); } } @-webkit-keyframes sway-7 { 0% { transform: rotate(72deg); } 40% { transform: rotate(118deg); } 100% { transform: rotate(68deg); } } @keyframes sway-7 { 0% { transform: rotate(72deg); } 40% { transform: rotate(118deg); } 100% { transform: rotate(68deg); } } @-webkit-keyframes sway-8 { 0% { transform: rotate(94deg); } 40% { transform: rotate(136deg); } 100% { transform: rotate(82deg); } } @keyframes sway-8 { 0% { transform: rotate(94deg); } 40% { transform: rotate(136deg); } 100% { transform: rotate(82deg); } } .wapper-home {
             background: url('images/bg-v2.png') no-repeat center center/cover;
         }
 
@@ -133,4 +139,55 @@
             display: block;
         }
     </style>
+@endpush
+
+@push('scripts')
+    <script src="{{ asset('js/animations/sakura.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            // Khởi tạo hiệu ứng hoa rơi (Sakura plugin từ sakura.js)
+            var sakura = new Sakura('body', {
+                fallSpeed: 1,
+                maxSize: 14,
+                minSize: 10,
+                delay: 250
+            });
+
+            // Xử lý bật/tắt nhạc thiền
+            var bgMusic = document.getElementById("bg-music");
+            var toggleBtn = document.getElementById("toggle-music");
+            var musicIcon = document.getElementById("music-icon");
+            var isPlaying = false;
+
+            // Thử tự động phát khi trang tải (nhiều trình duyệt sẽ chặn autoplay cho tới khi người dùng tương tác)
+            var playPromise = bgMusic.play();
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    isPlaying = true;
+                    musicIcon.classList.remove('bi-volume-mute-fill');
+                    musicIcon.classList.add('bi-volume-up-fill');
+                }).catch(error => {
+                    // Trình duyệt chặn autoplay do chính sách (phải đợi người dùng click)
+                    isPlaying = false;
+                    musicIcon.classList.remove('bi-volume-up-fill');
+                    musicIcon.classList.add('bi-volume-mute-fill');
+                });
+            }
+
+            toggleBtn.addEventListener("click", function (e) {
+                e.preventDefault();
+                if (isPlaying) {
+                    bgMusic.pause();
+                    musicIcon.classList.remove('bi-volume-up-fill');
+                    musicIcon.classList.add('bi-volume-mute-fill');
+                    isPlaying = false;
+                } else {
+                    bgMusic.play();
+                    musicIcon.classList.remove('bi-volume-mute-fill');
+                    musicIcon.classList.add('bi-volume-up-fill');
+                    isPlaying = true;
+                }
+            });
+        });
+    </script>
 @endpush

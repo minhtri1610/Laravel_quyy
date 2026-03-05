@@ -163,8 +163,14 @@ class QuyYController extends Controller
                     $data['address'] = $arr_address[0] ?? null;
                     $uid = Str::uuid()->toString();
                     $phone = $data['sdt'] ? preg_replace('/[^0-9]/', '', $data['sdt']) : null;
-                    $hash = md5($uid . $phone) . "_" . $uid;
-                    $url = route('client.quyy.detail', ['uid' => $hash]);
+                    $uid_code = $data['ma_so_phai'] ?? null;
+
+                    if ($uid_code) {
+                        $url = route('client.quyy.short_detail', ['uid' => $uid]);
+                    } else {
+                        // Fallback in case uid_code is somehow null
+                        $url = route('client.quyy.detail', ['uid' => $uid]);
+                    }
                     $qr_code = $this->createQR($url);
 
                     $insertData[] = [
@@ -423,12 +429,19 @@ class QuyYController extends Controller
                 return abort(404);
             }
 
+            $qr_code = $data->qr_code;
+            if (empty($qr_code)) {
+                $url = route('client.quyy.short_detail', ['uid' => $data->uid]);
+                $qr_code = $this->createQR($url);
+            }
+
             $request->merge([
                 'uid' => $uid,
                 'country' => $request->province,
                 'city' => $request->district,
                 'state' => $request->ward,
                 'date_registered' => $request->date_registered ? Carbon::parse($request->date_registered)->format('Y-m-d') : Carbon::now()->format('Y-m-d'),
+                'qr_code' => $qr_code,
             ]);
 
             $updateUserServiceService->updateByUid($request->all());
@@ -473,8 +486,7 @@ class QuyYController extends Controller
             if (isset($request->phone_number)) {
                 $phone = $request->phone_number ? preg_replace('/[^0-9]/', '', $request->phone_number) : null;
             }
-            $hash = md5($uid . $phone) . "_" . $uid;
-            $url = route('client.quyy.detail', ['uid' => $hash]);
+            $url = route('client.quyy.short_detail', ['uid' => $uid]);
             $qr_code = $this->createQR($url);
 
             $request->merge([

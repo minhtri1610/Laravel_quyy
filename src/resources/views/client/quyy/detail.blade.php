@@ -24,7 +24,8 @@
             /* Metallic Gold */
             outline-offset: -12px;
             padding: 60px 45px 50px;
-            width: 700px; /* Fixed width to mimic PC view on mobile */
+            width: 700px;
+            /* Fixed width to mimic PC view on mobile */
             min-width: 700px;
             border-radius: 4px;
             box-shadow:
@@ -289,7 +290,8 @@
             .certificate-wrapper {
                 justify-content: flex-start;
                 padding: 1rem 15px;
-                overflow-x: auto; /* Enable scrolling on smaller screens wrapper */
+                overflow-x: auto;
+                /* Enable scrolling on smaller screens wrapper */
             }
 
             .certificate {
@@ -304,8 +306,14 @@
         <div class="certificate-wrapper">
             <div class="certificate">
 
-                <div class="qr_code">
-                    {!! $user->qr_code !!}
+                <div class="qr_code tooltip-container" style="text-align: center;">
+                    <div id="qr-svg-code">
+                        {!! $user->qr_code !!}
+                    </div>
+                    <button class="btn btn-sm btn-outline-warning mt-2" onclick="downloadQRCode()"
+                        style="font-size: 12px; padding: 2px 8px; border-radius: 10px;">
+                        <i class="bi bi-download"></i> Tải QR
+                    </button>
                 </div>
 
                 <div class="certificate-content">
@@ -391,7 +399,9 @@
                             </span>
                         </div>
                         <div class="info-row">
-                            <p>Xin nguyện trọn đời <strong>QUY Y TAM BẢO</strong>, thọ trì <strong>NĂM GIỚI CẤM</strong> và <strong>BẢY ĐIỀU NGUYỆN</strong>.</p>
+                            <p>Xin nguyện trọn đời <strong>QUY Y TAM BẢO</strong>, thọ trì <strong>NĂM GIỚI CẤM</strong> và
+                                <strong>BẢY ĐIỀU NGUYỆN</strong>.
+                            </p>
                         </div>
                     </div>
 
@@ -422,5 +432,53 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+    <script>
+        function downloadQRCode() {
+            const svgElement = document.querySelector('#qr-svg-code svg');
+            if (!svgElement) {
+                alert("Không tìm thấy mã QR để tải!");
+                return;
+            }
+
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+
+            let svgData = new XMLSerializer().serializeToString(svgElement);
+            // Fix some constraints with external SVG loading:
+            if (!svgData.includes('xmlns="http://www.w3.org/2000/svg"')) {
+                svgData = svgData.replace(/<svg/, '<svg xmlns="http://www.w3.org/2000/svg"');
+            }
+
+            const img = new Image();
+            const svgBlob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+            const url = URL.createObjectURL(svgBlob);
+
+            img.onload = function () {
+                canvas.width = 300; // Tăng độ phân giải cho ảnh tải xuống hiển thị rõ hơn (phóng to)
+                canvas.height = 300;
+
+                // Tô nền trắng để chống suốt đối với PNG
+                ctx.fillStyle = "#ffffff";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                // Vẽ QR code lên trên
+                ctx.drawImage(img, 15, 15, 270, 270);
+                URL.revokeObjectURL(url);
+
+                const imgURI = canvas.toDataURL("image/png");
+
+                const link = document.createElement("a");
+                link.href = imgURI;
+                link.download = "QR_NhaChua_PhuocLoc_{{ $user->uid_code ?? 'ma-dinh-danh' }}.png";
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            };
+            img.src = url;
+        }
+    </script>
+@endpush
 
 @include('client.layouts.menu-bar')
