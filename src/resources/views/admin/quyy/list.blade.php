@@ -28,7 +28,7 @@
                                     data-gender="{{$item->gender}}" data-birthday="{{$item->birth_date}}" data-nick-name="{{$item->nickname}}">
                                         <b>SĐT:</b> {{$item->phone_number}} <br>
                                         <b>Email:</b> {{$item->email}}<br>
-                                        <b>Địa chỉ:</b> {{$item->province}} - {{$item->district}} - {{$item->ward}} - {{$item->address}} <br>
+                                        <b>Địa chỉ:</b> {{ collect([$item->province, $item->district, $item->ward, $item->address])->filter()->implode(' - ') }} <br>
                                     </td>
                                     <td data-created-at="{{ $item->created_at }}">{{date('Y-m-d', strtotime($item->created_at))}}</td>
                                     <td>
@@ -107,10 +107,7 @@
             $('#modal-verify #m_gender').html(gender);
             $('#modal-verify #m_phone').html(data.phone);
             $('#modal-verify #m_email').html(data.email);
-            let address = data.province + ' - ' + data.district + ' - ' + data.ward + ' - ' + data.address;
-            if(data.province == ''){
-                address = '';
-            }
+            let address = [data.province, data.district, data.ward, data.address].filter(Boolean).join(' - ');
             $('#modal-verify #m_address').html(address);
             $('#modal-verify #m_birthday').html(data.birthday);
             $('#modal-verify #m_nick_name').val(data.nickName);

@@ -22,7 +22,12 @@ class TemporaryController extends Controller
     public function store(Request $request, CreateTemporaryUserServiceService $service)
     {
         try {
-            $service->create($request->all());
+            $inputs = $request->all();
+            // Địa chỉ mới (từ 01/07/2025) không còn cấp Quận/Huyện
+            if ($request->input('address_type') !== 'old') {
+                $inputs['district'] = null;
+            }
+            $service->create($inputs);
             session()->flash('temporary_user_full_name', $request->input('full_name'));
             return redirect()->route('client.quyy.success');
         } catch (Throwable $th) {

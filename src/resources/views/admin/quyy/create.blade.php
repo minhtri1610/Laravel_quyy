@@ -97,48 +97,19 @@
             </div>
         </div>
 
-        <div class="row mb-3">
-            <div class="col-md-4">
-                <label for="province" class="form-label">
-                    <i class="bi bi-geo-alt-fill"></i> Tỉnh/Thành Phố
-                </label>
-                <select class="form-control input-custom @error('province') is-invalid @enderror" name="province" id="province">
-                    <option value="" {{ old('province') == '' ? 'selected' : '' }} disabled selected hidden"></option>
-                </select>
-                @error('province')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-            <div class="col-md-4">
-                <label for="district" class="form-label">
-                    <i class="bi bi-map-fill"></i> Quận/Huyện
-                </label>
-                <select name="district" id="district" class="form-control input-custom @error('district') is-invalid @enderror">
-                    <option value="" {{ old('district') == '' ? 'selected' : '' }} disabled selected hidden"></option>
-                </select>
-                @error('district')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-            <div class="col-md-4">
-                <label for="ward" class="form-label">
-                    <i class="bi bi-house-door-fill"></i> Phường/Xã
-                </label>
-                <select name="ward" id="ward" class="form-control input-custom @error('ward') is-invalid @enderror">
-                    <option value="" {{ old('ward') == '' ? 'selected' : '' }} disabled selected hidden"></option>
-                </select>
-                @error('ward')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
-        </div>
+        @include('commons._address-fields', [
+            'province' => old('province'),
+            'district' => old('district'),
+            'ward' => old('ward'),
+            'useOldAddress' => old('address_type') === 'old',
+        ])
 
         <div class="mb-3">
             <label for="address" class="form-label">
                 <i class="bi bi-geo-fill"></i> Địa Chỉ
             </label>
             <input type="text" class="form-control input-custom @error('address') is-invalid @enderror"
-                id="address" name="address" value="{{ old('address') }}">
+                id="address" name="address" value="{{ old('address') }}" placeholder="Thôn/Xóm/Ấp, số nhà, tên đường">
             @error('address')
             <div class="invalid-feedback">{{ $message }}</div>
             @enderror

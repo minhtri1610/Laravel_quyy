@@ -27,6 +27,7 @@ class SaveTemporaryUserServiceRequest extends FormRequest
             'ward' => 'nullable|string|max:255',
             'address' => 'nullable|string|max:255',
             'note' => 'nullable|string',
+            'address_type' => 'nullable|in:old',
         ];
     }
 
@@ -70,6 +71,8 @@ class SaveTemporaryUserServiceRequest extends FormRequest
             'address.max' => 'Địa chỉ không được vượt quá 255 ký tự.',
     
             'note.string' => 'Ghi chú phải là chuỗi ký tự.',
+
+            'address_type.in' => 'Loại địa chỉ không hợp lệ.',
         ];
     }
 }
