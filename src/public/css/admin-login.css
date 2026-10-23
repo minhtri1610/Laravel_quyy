@@ -1,0 +1,216 @@
+/* Trang đăng nhập quản trị (admin/auth/login). Phần dùng chung nằm ở theme.css */
+
+.auth-page {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+@media (min-width: 992px) {
+    .auth-page {
+        grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    }
+}
+
+/* ------------------------------------------------------------ hình minh họa */
+
+.auth-visual {
+    position: relative;
+    align-items: flex-end;
+    padding: 3rem;
+    background:
+        linear-gradient(180deg, rgba(46, 33, 25, 0) 35%, rgba(70, 22, 12, 0.88) 100%),
+        url('../images/top-v1.jpg') center / cover no-repeat;
+}
+
+.auth-visual-content {
+    max-width: 460px;
+    color: #fff;
+}
+
+.auth-visual-eyebrow {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(4px);
+}
+
+.auth-visual-title {
+    font-size: 2.1rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin: 0.5rem 0 0.75rem;
+}
+
+.auth-visual-desc {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+}
+
+/* ------------------------------------------------------------ form */
+
+.auth-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    padding: 2.5rem 1.5rem;
+    background:
+        linear-gradient(180deg, rgba(248, 243, 238, 0.4) 0%, var(--c-bg) 60%),
+        url('../images/bg-v2.png') center top / cover no-repeat;
+}
+
+.auth-card {
+    width: 100%;
+    max-width: 440px;
+    padding: 2.5rem 2.25rem 2rem;
+    background: var(--c-surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+}
+
+.auth-logo {
+    width: 76px;
+    margin-bottom: 1rem;
+}
+
+.auth-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--c-text);
+    margin-bottom: 0.25rem;
+}
+
+.auth-subtitle {
+    font-size: 15px;
+    color: var(--c-muted);
+    margin: 0;
+}
+
+/* Ô nhập có icon bên trái */
+.auth-input {
+    position: relative;
+}
+
+.auth-input-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: var(--c-muted);
+    pointer-events: none;
+    z-index: 2;
+}
+
+.auth-input .input-custom {
+    padding-left: 46px;
+}
+
+/* Bỏ icon cảnh báo mặc định của Bootstrap, tránh đè lên nút hiện mật khẩu */
+.auth-input .input-custom.is-invalid {
+    background-image: none;
+    padding-right: 16px;
+}
+
+.auth-input .auth-password,
+.auth-input .auth-password.is-invalid {
+    padding-right: 52px;
+}
+
+.auth-input:focus-within .auth-input-icon {
+    color: var(--c-primary);
+}
+
+.auth-toggle-password {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border: none;
+    border-radius: 10px;
+    background: transparent;
+    color: var(--c-muted);
+    font-size: 18px;
+    z-index: 2;
+}
+
+.auth-toggle-password:hover {
+    background: #f3ede7;
+    color: var(--c-primary);
+}
+
+.auth-toggle-password:focus-visible {
+    outline: 3px solid rgba(227, 160, 58, 0.5);
+}
+
+.auth-capslock {
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #a15c00;
+}
+
+.pl-theme .form-check-input {
+    width: 1.2em;
+    height: 1.2em;
+}
+
+.pl-theme .form-check-label {
+    font-size: 15px;
+    color: var(--c-text);
+    padding-left: 2px;
+}
+
+.auth-hint {
+    margin: 1.25rem 0 0;
+    font-size: 13.5px;
+    color: var(--c-muted);
+    text-align: center;
+}
+
+/* ------------------------------------------------------------ chân trang */
+
+.auth-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    font-size: 13.5px;
+    color: var(--c-muted);
+}
+
+.auth-back {
+    font-weight: 600;
+    color: var(--c-primary);
+    text-decoration: none;
+}
+
+.auth-back:hover {
+    text-decoration: underline;
+    color: var(--c-primary-dark);
+}
+
+/* ------------------------------------------------------------ mobile */
+
+@media (max-width: 575.98px) {
+    .auth-panel {
+        justify-content: flex-start;
+        padding: 2rem 12px;
+    }
+
+    .auth-card {
+        padding: 2rem 1.25rem 1.5rem;
+        border-radius: 20px;
+    }
+
+    .auth-title {
+        font-size: 1.5rem;
+    }
+}

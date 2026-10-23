@@ -27,6 +27,7 @@ class Admin extends Authenticatable
 
     protected $casts = [
         'roles' => 'array',
+        'is_active' => 'boolean',
     ];
 
     public function hasRole($role)

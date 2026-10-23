@@ -10,12 +10,12 @@
 @endphp
 
 @section('content')
-<div class="register-modern">
+<div class="pl-theme register-modern">
     {{-- Đầu trang --}}
     <section class="reg-hero">
         <div class="container text-center">
-            <img src="{{ asset('images/logo-sm.png') }}" alt="Logo Chùa Phước Lộc" class="reg-hero-logo" width="84" height="80">
-            <p class="reg-eyebrow">Chùa Phước Lộc</p>
+            <img src="{{ asset('images/logo-sm.png') }}" alt="Logo Chùa Phước Lộc" class="pl-logo reg-hero-logo" width="84" height="80">
+            <p class="pl-eyebrow">Chùa Phước Lộc</p>
             <h1 class="reg-title">Đăng ký Quy Y Tam Bảo</h1>
             <p class="reg-subtitle">Điền thông tin bên dưới, nhà chùa sẽ xem xét và liên hệ xác nhận với quý Phật tử.</p>
             <p class="reg-temple-address"><i class="bi bi-geo-alt"></i> Thôn Trinh Long Khánh, Xã Mỹ Cát, Huyện Phù Mỹ, Bình Định</p>
@@ -61,7 +61,7 @@
                         @csrf
 
                         @if ($errors->any())
-                            <div class="reg-alert" role="alert">
+                            <div class="pl-alert" role="alert">
                                 <i class="bi bi-exclamation-circle-fill"></i>
                                 <div>
                                     <strong>Vui lòng kiểm tra lại thông tin</strong>
@@ -248,6 +248,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/theme.css') }}">
     <link rel="stylesheet" href="{{ asset('css/register-form.css') }}">
 @endpush
 

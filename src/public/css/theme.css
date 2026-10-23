@@ -1,0 +1,236 @@
+/*
+ * Giao diện chung Chùa Phước Lộc: màu sắc, font, ô nhập, nút, thông báo.
+ * Dùng cho trang đăng ký Quy Y và trang đăng nhập quản trị.
+ * Bọc nội dung trong phần tử có class .pl-theme để áp dụng.
+ */
+
+.pl-theme {
+    --c-primary: #9b2c1f;
+    --c-primary-dark: #7a2016;
+    --c-accent: #e3a03a;
+    --c-accent-soft: #fdf3e4;
+    --c-bg: #f8f3ee;
+    --c-surface: #ffffff;
+    --c-text: #2e2119;
+    --c-muted: #7c6b60;
+    --c-border: #e8ddd3;
+    --c-input: #fcfaf8;
+    --c-danger: #c62828;
+    --radius-lg: 24px;
+    --radius-md: 14px;
+    --radius-sm: 12px;
+    --shadow-card: 0 24px 60px -24px rgba(90, 40, 15, 0.25), 0 2px 6px rgba(90, 40, 15, 0.05);
+
+    background: var(--c-bg);
+    color: var(--c-text);
+}
+
+/* client.css đặt font cho mọi phần tử bằng `*`, nên phải ghi đè từng phần tử */
+.pl-theme,
+.pl-theme * {
+    font-family: 'Be Vietnam Pro', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ------------------------------------------------------------ nhãn */
+
+.pl-theme .form-label {
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--c-text);
+    margin-bottom: 6px;
+}
+
+.pl-theme .req {
+    color: var(--c-danger);
+    font-weight: 700;
+}
+
+.pl-theme .optional {
+    margin-left: 4px;
+    padding: 1px 8px;
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--c-muted);
+    background: #f3ede7;
+    border-radius: 999px;
+    vertical-align: middle;
+}
+
+/* ------------------------------------------------------------ ô nhập */
+
+/* font-size >= 16px để iPhone không tự phóng to khi chạm vào ô nhập */
+.pl-theme .input-custom {
+    min-height: 50px;
+    padding: 12px 16px;
+    font-size: 16px;
+    color: var(--c-text);
+    background-color: var(--c-input);
+    border: 1.5px solid var(--c-border);
+    border-radius: var(--radius-sm);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+}
+
+.pl-theme select.input-custom {
+    padding-right: 2.5rem;
+    background-position: right 0.9rem center;
+}
+
+.pl-theme .input-custom:hover:not(:disabled):not(:focus) {
+    border-color: #d6c6b8;
+}
+
+.pl-theme .input-custom:focus {
+    background-color: #fff;
+    border-color: var(--c-accent);
+    box-shadow: 0 0 0 4px rgba(227, 160, 58, 0.2);
+    outline: none;
+}
+
+.pl-theme .input-custom::placeholder {
+    color: #b3a398;
+}
+
+.pl-theme .input-custom:disabled {
+    background-color: #f3efea;
+    color: #a6978c;
+    cursor: not-allowed;
+}
+
+.pl-theme .input-custom.is-invalid {
+    border-color: var(--c-danger);
+    background-color: #fffafa;
+}
+
+.pl-theme .input-custom.is-invalid:focus {
+    box-shadow: 0 0 0 4px rgba(198, 40, 40, 0.15);
+}
+
+.pl-theme .invalid-feedback {
+    font-size: 13.5px;
+    color: var(--c-danger);
+}
+
+.pl-theme textarea.input-custom {
+    min-height: 96px;
+    resize: vertical;
+}
+
+/* ------------------------------------------------------------ checkbox / công tắc */
+
+.pl-theme .form-check-input {
+    cursor: pointer;
+    border-color: #cdbdb0;
+}
+
+.pl-theme .form-check-input:checked {
+    background-color: var(--c-primary);
+    border-color: var(--c-primary);
+}
+
+.pl-theme .form-check-input:focus {
+    box-shadow: 0 0 0 4px rgba(227, 160, 58, 0.25);
+}
+
+.pl-theme .form-check-label {
+    cursor: pointer;
+}
+
+/* ------------------------------------------------------------ thông báo lỗi */
+
+.pl-alert {
+    display: flex;
+    gap: 12px;
+    padding: 14px 16px;
+    margin-bottom: 1.5rem;
+    background: #fdecea;
+    border: 1px solid #f5c2bd;
+    border-radius: var(--radius-sm, 12px);
+    color: #8e1c12;
+    font-size: 14.5px;
+}
+
+.pl-alert > i {
+    font-size: 20px;
+    line-height: 1.2;
+}
+
+.pl-alert ul {
+    margin: 4px 0 0;
+    padding-left: 1.1rem;
+}
+
+/* ------------------------------------------------------------ nút chính */
+
+.pl-theme .btn-submit {
+    width: 100%;
+    min-height: 56px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 17px;
+    font-weight: 600;
+    color: #fff;
+    background: linear-gradient(135deg, #b23a2a 0%, var(--c-primary) 55%, var(--c-primary-dark) 100%);
+    border: none;
+    border-radius: var(--radius-md);
+    box-shadow: 0 12px 24px -10px rgba(155, 44, 31, 0.6);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+}
+
+.pl-theme .btn-submit i {
+    margin-left: 6px;
+    transition: transform 0.15s ease;
+}
+
+.pl-theme .btn-submit:hover,
+.pl-theme .btn-submit:focus-visible {
+    color: #fff;
+    filter: brightness(1.06);
+    transform: translateY(-1px);
+    box-shadow: 0 16px 28px -10px rgba(155, 44, 31, 0.65);
+}
+
+.pl-theme .btn-submit:hover i {
+    transform: translateX(3px);
+}
+
+.pl-theme .btn-submit:focus-visible {
+    outline: 3px solid rgba(227, 160, 58, 0.6);
+    outline-offset: 2px;
+}
+
+.pl-theme .btn-submit:disabled {
+    color: #fff;
+    opacity: 0.8;
+    transform: none;
+}
+
+/* ------------------------------------------------------------ logo */
+
+.pl-logo {
+    height: auto;
+    padding: 6px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 8px 24px rgba(90, 40, 15, 0.18);
+}
+
+.pl-eyebrow {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    padding: 4px 14px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-primary);
+    background: rgba(255, 255, 255, 0.75);
+    border: 1px solid rgba(155, 44, 31, 0.15);
+    border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .pl-theme * {
+        transition: none !important;
+    }
+}
