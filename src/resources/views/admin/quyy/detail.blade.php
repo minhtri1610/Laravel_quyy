@@ -7,8 +7,11 @@
                 <h3 class="card-title">Chi tiết</h3>
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.quyy.update', ['uid' => $data->uid]) }}" method="POST">
+                <form action="{{ route('admin.quyy.update', ['uid' => $data->uid]) }}" method="POST" enctype="multipart/form-data">
                     @csrf
+
+                    @include('admin.quyy._avatar-field', ['avatarUrl' => $data->avatar_url])
+
                     <div class="row mb-3">
                         <div class="col-md">
                             <label for="full_name" class="form-label">
@@ -127,4 +130,5 @@
 
 @push('scripts')
     <script src="{{ asset('js/quyy.js') }}"></script>
+    <script src="{{ asset('js/avatar-upload.js') }}"></script>
 @endpush

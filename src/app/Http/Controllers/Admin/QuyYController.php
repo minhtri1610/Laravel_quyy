@@ -20,12 +20,13 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 use App\Traits\ConvertHeaderTrait;
 use App\Traits\QRcodeGenerateTrait;
+use App\Traits\AvatarUploadTrait;
 use App\Http\Requests\CreateUserFromAdminRequest;
 use Carbon\Carbon;
 
 class QuyYController extends Controller
 {
-    use ConvertHeaderTrait, QRcodeGenerateTrait;
+    use ConvertHeaderTrait, QRcodeGenerateTrait, AvatarUploadTrait;
     public function index(
         ListUserServicesService $listUserServicesService,
         Request $request,
@@ -419,6 +420,13 @@ class QuyYController extends Controller
         UpdateUserServiceService $updateUserServiceService,
         $uid
     ) {
+        $request->validate(
+            ['full_name' => 'required|string|max:255'] + CreateUserFromAdminRequest::avatarRules(),
+            ['full_name.required' => 'Vui lòng nhập họ và tên.', 'full_name.max' => 'Họ và tên không được vượt quá 255 ký tự.']
+                + CreateUserFromAdminRequest::avatarMessages()
+        );
+
+        $newAvatar = null;
         try {
             $conditions = [
                 'uid' => $uid,
@@ -437,6 +445,8 @@ class QuyYController extends Controller
 
             $request->merge([
                 'uid' => $uid,
+                // Form gửi full_name, cột trong bảng users là name
+                'name' => trim($request->full_name),
                 'country' => $request->province,
                 'city' => $request->district,
                 'state' => $request->ward,
@@ -444,9 +454,25 @@ class QuyYController extends Controller
                 'qr_code' => $qr_code,
             ]);
 
+            // Ảnh đại diện: ảnh mới > xóa ảnh > giữ nguyên (không nhận giá trị avatar gửi trực tiếp từ form)
+            $oldAvatar = $data->avatar;
+            $avatar = $oldAvatar;
+            if ($request->hasFile('avatar_file')) {
+                $newAvatar = $avatar = $this->storeAvatar($request->file('avatar_file'));
+            } elseif ($request->boolean('remove_avatar')) {
+                $avatar = null;
+            }
+            $request->merge(['avatar' => $avatar]);
+
             $updateUserServiceService->updateByUid($request->all());
+
+            // Lưu DB xong mới xóa ảnh cũ
+            if ($oldAvatar && $oldAvatar !== $avatar) {
+                $this->deleteAvatar($oldAvatar);
+            }
             return redirect()->route('admin.quyy.index');
         } catch (\Exception $e) {
+            $this->deleteAvatar($newAvatar);
             return response()->json([
                 'success' => false,
                 'message' => $e->getMessage()
@@ -489,16 +515,21 @@ class QuyYController extends Controller
             $url = route('client.quyy.short_detail', ['uid' => $uid]);
             $qr_code = $this->createQR($url);
 
+            // Không nhận giá trị avatar gửi trực tiếp từ form, chỉ nhận file upload
+            $avatar = $request->hasFile('avatar_file') ? $this->storeAvatar($request->file('avatar_file')) : null;
+
             $request->merge([
                 'nick_name' => $data['nickname'],
                 'uid_code' => $uid_code,
                 'uid' => $uid,
-                'qr_code' => $qr_code
+                'qr_code' => $qr_code,
+                'avatar' => $avatar,
             ]);
 
             $createUserServiceService->create($request->all());
             return redirect()->route('admin.quyy.index');
         } catch (\Exception $e) {
+            $this->deleteAvatar($avatar ?? null);
             return $e->getMessage();
         }
     }

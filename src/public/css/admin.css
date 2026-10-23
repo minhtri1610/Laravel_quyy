@@ -177,3 +177,64 @@ table.dataTable > tbody > tr.child {
         width: 33%
     }
 }
+
+/* ------------------------------------------------------------ ảnh đại diện Phật tử (admin/quyy/_avatar-field) */
+
+.avatar-field {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 16px;
+    border: 1px dashed #d6c6b8;
+    border-radius: 14px;
+    background: #fcfaf8;
+}
+
+.avatar-preview {
+    flex: 0 0 112px;
+    width: 112px;
+    height: 112px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+    background: #f3ede7;
+    border: 3px solid #fff;
+    box-shadow: 0 4px 14px rgba(90, 40, 15, 0.15);
+}
+
+.avatar-preview img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-preview i {
+    font-size: 56px;
+    color: #c4b2a4;
+}
+
+.avatar-preview.is-invalid {
+    border-color: #dc3545;
+}
+
+.avatar-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.avatar-actions .btn {
+    cursor: pointer;
+}
+
+@media (max-width: 575.98px) {
+    .avatar-field {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .avatar-actions {
+        justify-content: center;
+    }
+}

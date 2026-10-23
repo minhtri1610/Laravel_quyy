@@ -11,13 +11,16 @@
 
 <h2 class="page-title-area mt-4">Thêm mới</h2>
 <div class="wp-add mt-3">
-    <form action="{{ route('admin.quyy.store') }}" method="POST">
+    <form action="{{ route('admin.quyy.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         @error('nickname')
             <div class="alert alert-danger">
                 {{ $message }}
             </div>
         @enderror
+
+        @include('admin.quyy._avatar-field', ['avatarUrl' => null])
+
         <div class="row mb-3">
             <div class="col-md">
                 <label for="full_name" class="form-label">
@@ -143,4 +146,5 @@
 @push('scripts')
     <script src="{{ asset('js/quyy.js') }}"></script>
     <script src="{{ asset('js/suggest-name.js') }}"></script>
+    <script src="{{ asset('js/avatar-upload.js') }}"></script>
 @endpush

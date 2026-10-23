@@ -38,9 +38,18 @@ class User extends Authenticatable
         'is_active',
         'date_registered',
         'qr_code',
+        'avatar',
     ];
 
     protected $casts = [
 
     ];
+
+    /**
+     * URL ảnh đại diện, null nếu chưa có ảnh
+     */
+    public function getAvatarUrlAttribute(): ?string
+    {
+        return $this->avatar ? asset('storage/' . $this->avatar) : null;
+    }
 }

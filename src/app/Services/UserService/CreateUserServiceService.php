@@ -84,7 +84,7 @@ class CreateUserServiceService
             $nickname = $inputs['nickname'] ?? '';
         }
 
-        return [
+        $data = [
             'name' => trim($data_temp->full_name ?? 'No Name'),
             'gender' => $data_temp->gender ?? 'male',
             'address' => trim($data_temp->address ?? ''),
@@ -102,5 +102,13 @@ class CreateUserServiceService
             'uid' => $data_temp->uid ?? ($inputs['uid'] ?? Str::uuid()->toString()),
             'qr_code' => $data_temp->qr_code ?? ($inputs['qr_code'] ?? null),
         ];
+
+        // Chỉ gán khi có ảnh, để nhập lại từ Excel (updateOrCreate) không xóa ảnh đang có
+        $avatar = $data_temp->avatar ?? null;
+        if (is_string($avatar) && $avatar !== '') {
+            $data['avatar'] = $avatar;
+        }
+
+        return $data;
     }
 }
