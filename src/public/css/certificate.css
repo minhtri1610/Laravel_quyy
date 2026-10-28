@@ -1,0 +1,530 @@
+/* Phiếu Quy Y (client/quyy/detail). Thanh công cụ dùng theme.css */
+
+.cert-page {
+    background:
+        linear-gradient(180deg, rgba(248, 243, 238, 0.2) 0%, #f8f3ee 340px),
+        url('../images/bg-v2.png') center top / 100% auto no-repeat,
+        #f8f3ee;
+    padding-bottom: 5rem;
+    min-height: 100vh;
+}
+
+/* ------------------------------------------------------------ đầu trang */
+
+.cert-head.pl-theme {
+    background: transparent;
+    padding: 2rem 0 1.5rem;
+}
+
+.cert-page-title {
+    font-size: clamp(1.6rem, 4vw, 2.3rem);
+    font-weight: 700;
+    margin: 0.25rem 0 0.35rem;
+    color: var(--c-text);
+}
+
+.cert-page-subtitle {
+    font-size: 16px;
+    color: var(--c-muted);
+    margin-bottom: 1.25rem;
+}
+
+.cert-page-subtitle strong {
+    color: var(--c-primary);
+}
+
+.cert-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.cert-tip {
+    background: transparent;
+    text-align: center;
+    font-size: 14px;
+    color: var(--c-muted);
+    margin: 1.25rem auto 0;
+    padding: 0 16px;
+}
+
+.cert-tip i {
+    color: var(--c-accent);
+}
+
+/* ------------------------------------------------------------ khung thu nhỏ */
+
+.cert-stage {
+    position: relative;
+    margin: 0 auto;
+    max-width: 760px;
+    padding: 0 12px;
+}
+
+.cert-scale {
+    width: 720px;
+    margin: 0 auto;
+}
+
+/* JS bật class này khi màn hình hẹp hơn phiếu */
+.cert-stage.is-scaled .cert-scale {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform-origin: top center;
+}
+
+/* ------------------------------------------------------------ phiếu */
+
+.certificate {
+    --cert-red: #8b1a10;
+    --cert-red-bright: #b3261e;
+    --cert-gold: #c9a23f;
+    --cert-gold-dark: #9c7a22;
+    --cert-ink: #3b2a20;
+    --cert-paper: #fffaf0;
+
+    position: relative;
+    width: 720px;
+    padding: 56px 52px 44px;
+    color: var(--cert-ink);
+    background:
+        radial-gradient(ellipse at center, rgba(255, 255, 255, 0.9) 0%, rgba(255, 250, 240, 0) 70%),
+        linear-gradient(135deg, #fffaf0 0%, #fbf1dc 100%);
+    border-radius: 6px;
+    box-shadow: 0 30px 60px -25px rgba(90, 40, 15, 0.45), 0 2px 8px rgba(90, 40, 15, 0.08);
+    overflow: hidden;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+
+/* client.css đặt font cho mọi phần tử bằng `*`, nên ghi đè cho mọi phần tử trong phiếu */
+.certificate,
+.certificate * {
+    font-family: 'Lora', Georgia, serif;
+}
+
+/* Khung đôi: viền đỏ ngoài, viền vàng trong */
+.cert-frame {
+    position: absolute;
+    inset: 12px;
+    border: 2px solid var(--cert-red);
+    border-radius: 4px;
+    pointer-events: none;
+}
+
+.cert-frame::before {
+    content: '';
+    position: absolute;
+    inset: 5px;
+    border: 1px solid var(--cert-gold);
+    border-radius: 2px;
+}
+
+/* Hoa sen mờ ở nền */
+.certificate::before {
+    content: '';
+    position: absolute;
+    top: 52%;
+    left: 50%;
+    width: 75%;
+    height: 60%;
+    transform: translate(-50%, -50%);
+    background: url('../images/lotus-icon.png') center / contain no-repeat;
+    opacity: 0.06;
+    pointer-events: none;
+}
+
+.certificate > * {
+    position: relative;
+}
+
+.certificate > .cert-frame {
+    position: absolute;
+}
+
+/* Mã QR góc phải */
+.certificate .cert-qr {
+    position: absolute;
+    top: 34px;
+    right: 34px;
+    z-index: 2;
+    padding: 6px 6px 4px;
+    text-align: center;
+    background: #fff;
+    border: 1px solid rgba(201, 162, 63, 0.6);
+    border-radius: 6px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.certificate .cert-qr svg {
+    display: block;
+    width: 76px;
+    height: 76px;
+}
+
+.certificate .cert-qr span {
+    display: block;
+    margin-top: 2px;
+    font-size: 9px;
+    letter-spacing: 0.04em;
+    color: var(--cert-gold-dark);
+}
+
+/* ------------------------------------------------------------ tiêu đề */
+
+.cert-header {
+    text-align: center;
+    margin-bottom: 26px;
+}
+
+.cert-logo {
+    width: 92px;
+    height: auto;
+    margin-bottom: 10px;
+}
+
+.certificate .cert-org {
+    margin: 0 0 2px;
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--cert-red);
+}
+
+.certificate .cert-pagoda {
+    margin: 0;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--cert-gold-dark);
+}
+
+.cert-divider {
+    margin: 8px 0 6px;
+    font-size: 20px;
+    color: var(--cert-gold);
+}
+
+.certificate .cert-title {
+    margin: 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 40px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--cert-red-bright);
+    text-shadow: 1px 1px 0 #fff, 2px 3px 6px rgba(139, 26, 16, 0.15);
+}
+
+/* ------------------------------------------------------------ thông tin */
+
+.cert-info {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    margin-bottom: 18px;
+}
+
+.cert-photo {
+    flex: 0 0 120px;
+    width: 120px;
+    height: 160px; /* tỉ lệ ảnh thẻ 3x4 */
+    margin: 4px 0 0;
+    padding: 5px;
+    background: #fff;
+    border: 1px solid var(--cert-gold);
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(90, 40, 15, 0.15);
+}
+
+.cert-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 2px;
+}
+
+.cert-rows {
+    flex: 1;
+    min-width: 0;
+}
+
+.cert-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    margin-bottom: 14px;
+    font-size: 18px;
+}
+
+.cert-row-top {
+    align-items: flex-start;
+}
+
+.certificate .cert-label {
+    flex: 0 0 auto;
+    font-style: italic;
+    font-weight: 500;
+    color: var(--cert-red);
+    white-space: nowrap;
+}
+
+.certificate .cert-label-inline {
+    margin-left: 12px;
+}
+
+.certificate .cert-value {
+    flex: 1;
+    min-width: 0;
+    min-height: 30px;
+    padding-bottom: 2px;
+    font-weight: 600;
+    border-bottom: 1px dotted rgba(139, 26, 16, 0.6);
+}
+
+.certificate .cert-value-short {
+    flex: 0 0 90px;
+}
+
+.certificate .cert-value-multiline {
+    line-height: 1.5;
+}
+
+.certificate .cert-name {
+    font-size: 21px;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.certificate .cert-dharma-name {
+    font-family: 'Imperial Script', 'Great Vibes', cursive;
+    font-size: 42px;
+    font-weight: 400;
+    line-height: 0.95;
+    letter-spacing: 0.06em;
+    color: var(--cert-red-bright);
+}
+
+.certificate .cert-pledge {
+    margin: 0 0 20px;
+    padding: 12px 16px;
+    font-size: 15.5px;
+    text-align: center;
+    background: rgba(201, 162, 63, 0.1);
+    border-left: 3px solid var(--cert-gold);
+    border-right: 3px solid var(--cert-gold);
+    border-radius: 4px;
+}
+
+.certificate .cert-pledge strong {
+    color: var(--cert-red);
+}
+
+/* ------------------------------------------------------------ giới nguyện */
+
+.certificate .cert-refuges {
+    margin: 0 0 16px;
+    padding-left: 22px;
+    font-size: 14.5px;
+    line-height: 1.6;
+}
+
+.certificate .cert-refuges strong {
+    color: var(--cert-red-bright);
+    text-transform: uppercase;
+}
+
+.cert-vows-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.25fr;
+    gap: 14px;
+}
+
+.cert-vows-box {
+    padding: 14px 16px 10px;
+    background: rgba(255, 255, 255, 0.55);
+    border: 1px solid rgba(201, 162, 63, 0.45);
+    border-radius: 8px;
+}
+
+.certificate .cert-vows-box h3 {
+    margin: 0 0 8px;
+    font-family: 'Playfair Display', serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-align: center;
+    text-transform: uppercase;
+    color: var(--cert-gold-dark);
+}
+
+.certificate .cert-vows-box ol {
+    margin: 0;
+    padding-left: 20px;
+    font-size: 13.5px;
+    line-height: 1.45;
+}
+
+.certificate .cert-vows-box li {
+    margin-bottom: 4px;
+}
+
+/* ------------------------------------------------------------ chân phiếu */
+
+.cert-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-top: 22px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(201, 162, 63, 0.45);
+}
+
+.cert-footer p {
+    margin: 0;
+}
+
+.certificate .cert-footer-left p:first-child {
+    font-size: 13px;
+    font-style: italic;
+    color: var(--cert-red);
+}
+
+.certificate .cert-code {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: var(--cert-ink);
+}
+
+.cert-footer-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.certificate .cert-date {
+    font-size: 15px;
+    font-style: italic;
+}
+
+.certificate .cert-date b {
+    font-style: normal;
+    color: var(--cert-red);
+}
+
+.certificate .cert-master-title {
+    margin-top: 6px;
+    font-family: 'Playfair Display', serif;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--cert-gold-dark);
+}
+
+.cert-stamp {
+    width: 230px;
+    height: auto;
+    margin: 2px 0;
+}
+
+.certificate .cert-master-name {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--cert-red-bright);
+}
+
+/* ------------------------------------------------------------ mobile */
+
+@media (max-width: 575.98px) {
+    .cert-head.pl-theme {
+        padding: 1.25rem 0 1rem;
+    }
+
+    .cert-toolbar {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        max-width: 420px;
+        margin: 0 auto;
+    }
+
+    .cert-toolbar .pl-btn-primary {
+        grid-column: 1 / -1;
+    }
+
+    .cert-toolbar .pl-btn:not(.pl-btn-primary) {
+        flex-direction: column;
+        gap: 2px;
+        padding: 8px 6px;
+        font-size: 13.5px;
+    }
+
+    .cert-stage {
+        padding: 0 8px;
+    }
+
+    /* Menu nổi xuống góc dưới cho khỏi che phiếu */
+    .cert-page ~ .fixed-menu,
+    .cert-page .fixed-menu {
+        top: auto;
+        bottom: 16px;
+        right: 16px;
+        transform: none;
+        flex-direction: row;
+        gap: 10px;
+    }
+}
+
+/* ------------------------------------------------------------ in */
+
+@media print {
+    @page {
+        size: A4 portrait;
+        margin: 10mm;
+    }
+
+    /* Chỉ in phiếu: ẩn hẳn (display: none) để không chiếm chỗ, tránh trang trắng */
+    body > header,
+    body > footer,
+    .footer,
+    .cert-head,
+    .cert-tip,
+    .fixed-menu {
+        display: none !important;
+    }
+
+    body,
+    .cert-page {
+        background: none !important;
+        min-height: 0;
+        padding: 0;
+    }
+
+    .cert-stage,
+    .cert-stage.is-scaled {
+        height: auto !important;
+        max-width: none;
+        padding: 0;
+    }
+
+    .cert-scale,
+    .cert-stage.is-scaled .cert-scale {
+        position: static;
+        transform: none !important;
+    }
+
+    .certificate {
+        margin: 0 auto;
+        box-shadow: none;
+        zoom: 0.92; /* vừa 1 trang A4 */
+        break-inside: avoid;
+    }
+}

@@ -205,6 +205,66 @@
     transform: none;
 }
 
+/* ------------------------------------------------------------ nút phụ */
+
+.pl-theme .pl-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 46px;
+    padding: 10px 18px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--c-text);
+    background: var(--c-surface);
+    border: 1.5px solid var(--c-border);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 2px 6px rgba(90, 40, 15, 0.06);
+    transition: border-color 0.15s ease, color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.pl-theme .pl-btn i {
+    font-size: 17px;
+    color: var(--c-primary);
+}
+
+.pl-theme .pl-btn:hover,
+.pl-theme .pl-btn:focus-visible {
+    border-color: var(--c-accent);
+    color: var(--c-primary);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px -6px rgba(90, 40, 15, 0.25);
+}
+
+.pl-theme .pl-btn:focus-visible {
+    outline: 3px solid rgba(227, 160, 58, 0.5);
+    outline-offset: 2px;
+}
+
+.pl-theme .pl-btn:disabled {
+    opacity: 0.7;
+    transform: none;
+}
+
+.pl-theme .pl-btn-primary {
+    color: #fff;
+    background: linear-gradient(135deg, #b23a2a 0%, var(--c-primary) 55%, var(--c-primary-dark) 100%);
+    border-color: transparent;
+    box-shadow: 0 10px 20px -10px rgba(155, 44, 31, 0.6);
+}
+
+.pl-theme .pl-btn-primary i {
+    color: #fff;
+}
+
+.pl-theme .pl-btn-primary:hover,
+.pl-theme .pl-btn-primary:focus-visible {
+    color: #fff;
+    border-color: transparent;
+    filter: brightness(1.06);
+}
+
 /* ------------------------------------------------------------ logo */
 
 .pl-logo {
